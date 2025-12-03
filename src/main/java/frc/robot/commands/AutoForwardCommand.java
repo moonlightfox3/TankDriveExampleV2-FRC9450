@@ -43,6 +43,6 @@ public class AutoForwardCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return MOVE_DIST_FEET - m_drivetrain.getAverageDistanceInch() <= END_OFFSET_FEET;
+    return MOVE_DIST_FEET - (m_drivetrain.getAverageDistanceInch() / 12) <= END_OFFSET_FEET;
   }
 }

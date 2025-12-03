@@ -13,7 +13,7 @@ public class MoveJoystickCommand extends Command {
   private Drivetrain m_drivetrain;
   private CommandPS4Controller m_controller;
 
-  private static final double DEADBAND_SIZE = 0.02;
+  private static final double DEADBAND_SIZE = 0.03;
   private static final double SPEED_MUL = 0.1;
 
   /** Creates a new MoveJoystickCommand. */

@@ -18,6 +18,9 @@ public class Drivetrain extends SubsystemBase {
 
   public static final double WHEEL_DIAMETER_INCH = 6;
   public static final double WHEEL_CIRCUMFERENCE_INCH = Math.PI * WHEEL_DIAMETER_INCH;
+  // private static final double COUNTS_PER_REV = 4096;
+  // private static final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFERENCE_INCH / COUNTS_PER_REV;
+  private static final double POS_CONVERT_FACTOR = 1.0/8.0; // Probably a gearbox
 
   private SparkMaxConfig config = new SparkMaxConfig();
   private SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);
@@ -30,9 +33,12 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new Drivetrain. */
   private Drivetrain() {
+    config.encoder.positionConversionFactor(POS_CONVERT_FACTOR);
+
     config.inverted(false);
     leftFrontMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     leftBackMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
     config.inverted(true);
     rightFrontMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     rightBackMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -42,7 +48,6 @@ public class Drivetrain extends SubsystemBase {
     return instance;
   }
 
-  // TODO: distance not working
   public double getLeftDistanceInch() {
     return leftFrontEncoder.getPosition() * WHEEL_CIRCUMFERENCE_INCH;
   }
