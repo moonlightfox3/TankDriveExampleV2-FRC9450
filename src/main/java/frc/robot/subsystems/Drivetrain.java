@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -19,6 +20,8 @@ public class Drivetrain extends SubsystemBase {
   public static final double WHEEL_DIAMETER_INCH = 6;
   public static final double WHEEL_CIRCUMFERENCE_INCH = Math.PI * WHEEL_DIAMETER_INCH;
   private static final double POS_CONVERT_FACTOR = 1.0 / 8.0; // Gearbox
+
+  private final PIDController speedPID = new PIDController(0.2, 0, 0);
 
   private SparkMaxConfig config = new SparkMaxConfig();
   private SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);
@@ -67,12 +70,18 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void setLeftMotors (double speed) {
-    leftFrontMotor.set(speed);
-    leftBackMotor.set(speed);
+    double currentSpeed = leftFrontMotor.get();
+    double newSpeed = currentSpeed + speedPID.calculate(currentSpeed - speed);
+
+    leftFrontMotor.set(newSpeed);
+    leftBackMotor.set(newSpeed);
   }
   public void setRightMotors (double speed) {
-    rightFrontMotor.set(speed);
-    rightBackMotor.set(speed);
+    double currentSpeed = rightFrontMotor.get();
+    double newSpeed = currentSpeed + speedPID.calculate(currentSpeed - speed);
+
+    rightFrontMotor.set(newSpeed);
+    rightBackMotor.set(newSpeed);
   }
   public void setMotors (double lSpeed, double rSpeed) {
     setLeftMotors(lSpeed);
