@@ -18,9 +18,7 @@ public class Drivetrain extends SubsystemBase {
 
   public static final double WHEEL_DIAMETER_INCH = 6;
   public static final double WHEEL_CIRCUMFERENCE_INCH = Math.PI * WHEEL_DIAMETER_INCH;
-  // private static final double COUNTS_PER_REV = 4096;
-  // private static final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFERENCE_INCH / COUNTS_PER_REV;
-  private static final double POS_CONVERT_FACTOR = 1.0/8.0; // Probably a gearbox
+  private static final double POS_CONVERT_FACTOR = 1.0 / 8.0; // Gearbox
 
   private SparkMaxConfig config = new SparkMaxConfig();
   private SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);
