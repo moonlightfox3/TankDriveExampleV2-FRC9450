@@ -25,7 +25,7 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final CommandPS4Controller m_driverController = new CommandPS4Controller(0);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /** The container for the robot. Contains subsystems, IO devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
