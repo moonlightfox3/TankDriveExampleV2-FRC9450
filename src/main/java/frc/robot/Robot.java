@@ -29,8 +29,8 @@ public class Robot extends LoggedRobot {
    * initialization code.
    */
   public Robot() {
-    // Set up logging
-    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+    // Logging
+    Logger.recordMetadata("ProjectName", "TankDriveExampleV2"); // Set a metadata value
     if (isReal()) {
         Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
         Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
