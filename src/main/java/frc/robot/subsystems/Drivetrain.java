@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -73,6 +75,7 @@ public class Drivetrain extends SubsystemBase {
     double currentSpeed = leftFrontMotor.get();
     double newSpeed = currentSpeed + speedPID.calculate(currentSpeed - speed);
 
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/Left", newSpeed);
     leftFrontMotor.set(newSpeed);
     leftBackMotor.set(newSpeed);
   }
@@ -80,6 +83,7 @@ public class Drivetrain extends SubsystemBase {
     double currentSpeed = rightFrontMotor.get();
     double newSpeed = currentSpeed + speedPID.calculate(currentSpeed - speed);
 
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/Right", newSpeed);
     rightFrontMotor.set(newSpeed);
     rightBackMotor.set(newSpeed);
   }
