@@ -71,27 +71,27 @@ public class Drivetrain extends SubsystemBase {
     resetRightDistance();
   }
 
-  public void setLeftMotors (double speed) {
-    double currentSpeed = leftFrontMotor.get();
-    double newSpeed = currentSpeed + speedPID.calculate(currentSpeed - speed);
+  public void setLeftMotors (double volts) {
+    double currentVolts = leftFrontMotor.get() * 12.0;
+    double newVolts = currentVolts + speedPID.calculate(currentVolts - volts);
 
-    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/Left", newSpeed);
-    leftFrontMotor.set(newSpeed);
-    leftBackMotor.set(newSpeed);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/Left", newVolts);
+    leftFrontMotor.setVoltage(newVolts);
+    leftBackMotor.setVoltage(newVolts);
   }
-  public void setRightMotors (double speed) {
-    double currentSpeed = rightFrontMotor.get();
-    double newSpeed = currentSpeed + speedPID.calculate(currentSpeed - speed);
+  public void setRightMotors (double volts) {
+    double currentVolts = rightFrontMotor.get() * 12.0;
+    double newVolts = currentVolts + speedPID.calculate(currentVolts - volts);
 
-    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/Right", newSpeed);
-    rightFrontMotor.set(newSpeed);
-    rightBackMotor.set(newSpeed);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/Right", newVolts);
+    rightFrontMotor.setVoltage(newVolts);
+    rightBackMotor.setVoltage(newVolts);
   }
-  public void setMotors (double lSpeed, double rSpeed) {
-    setLeftMotors(lSpeed);
-    setRightMotors(rSpeed);
+  public void setMotors (double lVolts, double rVolts) {
+    setLeftMotors(lVolts);
+    setRightMotors(rVolts);
   }
-  public void setAllMotors (double speed) {
-    setMotors(speed, speed);
+  public void setAllMotors (double volts) {
+    setMotors(volts, volts);
   }
 }

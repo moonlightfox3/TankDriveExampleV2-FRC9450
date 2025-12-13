@@ -42,7 +42,7 @@ public class MoveJoystickCommand extends Command {
     lSpeed *= 1 - -Math.min(rStick, 0.0);
     rSpeed *= 1 -  Math.max(rStick, 0.0);
 
-    m_drivetrain.setMotors(lSpeed * SPEED_MUL, rSpeed * SPEED_MUL);
+    m_drivetrain.setMotors(lSpeed * 12.0 * SPEED_MUL, rSpeed * 12.0 * SPEED_MUL);
   }
 
   // Called once the command ends or is interrupted.

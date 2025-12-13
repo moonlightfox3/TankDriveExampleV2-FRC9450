@@ -11,9 +11,9 @@ import frc.robot.subsystems.Drivetrain;
 public class AutoForwardCommand extends Command {
   private Drivetrain m_drivetrain;
 
-  private static final double MOVE_SPEED = 0.1;
-  private static final double MOVE_DIST_FEET = 2;
-  private static final double END_OFFSET_FEET = 1/2;
+  private static final double MOVE_VOLTS = 1.0;
+  private static final double MOVE_DIST_FEET = 2.0;
+  private static final double END_OFFSET_FEET = 1.0 / 2.0;
 
   /** Creates a new AutoForwardCommand. */
   public AutoForwardCommand(Drivetrain drivetrain) {
@@ -25,7 +25,7 @@ public class AutoForwardCommand extends Command {
   @Override
   public void initialize() {
     m_drivetrain.resetAllDistance();
-    m_drivetrain.setAllMotors(MOVE_SPEED);
+    m_drivetrain.setAllMotors(MOVE_VOLTS);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,6 +43,6 @@ public class AutoForwardCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return MOVE_DIST_FEET - (m_drivetrain.getAverageDistanceInch() / 12) <= END_OFFSET_FEET;
+    return MOVE_DIST_FEET - (m_drivetrain.getAverageDistanceInch() / 12.0) <= END_OFFSET_FEET;
   }
 }
