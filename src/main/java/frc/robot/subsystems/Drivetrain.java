@@ -75,7 +75,9 @@ public class Drivetrain extends SubsystemBase {
     double currentVolts = leftFrontMotor.get() * 12.0;
     double newVolts = currentVolts + speedPID.calculate(currentVolts - volts);
 
-    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/Left", newVolts);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/LeftInput", currentVolts);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/LeftTarget", volts);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/LeftOutput", newVolts);
     leftFrontMotor.setVoltage(newVolts);
     leftBackMotor.setVoltage(newVolts);
   }
@@ -83,7 +85,9 @@ public class Drivetrain extends SubsystemBase {
     double currentVolts = rightFrontMotor.get() * 12.0;
     double newVolts = currentVolts + speedPID.calculate(currentVolts - volts);
 
-    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/Right", newVolts);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/RightInput", currentVolts);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/RightTarget", volts);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/RightOutput", newVolts);
     rightFrontMotor.setVoltage(newVolts);
     rightBackMotor.setVoltage(newVolts);
   }

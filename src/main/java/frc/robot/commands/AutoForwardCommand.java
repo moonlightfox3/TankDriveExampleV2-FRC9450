@@ -11,7 +11,7 @@ import frc.robot.subsystems.Drivetrain;
 public class AutoForwardCommand extends Command {
   private Drivetrain m_drivetrain;
 
-  private static final double MOVE_VOLTS = 1.0;
+  private static final double MOVE_VOLTS = 1.2;
   private static final double MOVE_DIST_FEET = 2.0;
   private static final double END_OFFSET_FEET = 1.0 / 2.0;
 
