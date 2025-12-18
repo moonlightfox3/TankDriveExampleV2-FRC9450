@@ -61,6 +61,11 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    double leftDistance = m_robotContainer.m_drivetrain.getLeftDistanceInch();
+    double rightDistance = m_robotContainer.m_drivetrain.getRightDistanceInch();
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Position/LeftDistance", leftDistance);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Position/RightDistance", rightDistance);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

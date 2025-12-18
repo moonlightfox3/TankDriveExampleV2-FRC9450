@@ -25,14 +25,17 @@ public class Drivetrain extends SubsystemBase {
 
   private final PIDController speedPID = new PIDController(0.2, 0, 0);
 
-  private SparkMaxConfig config = new SparkMaxConfig();
-  private SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);
-  private SparkMax leftBackMotor = new SparkMax(4, MotorType.kBrushless);
-  private SparkMax rightFrontMotor = new SparkMax(2, MotorType.kBrushless);
-  private SparkMax rightBackMotor = new SparkMax(3, MotorType.kBrushless);
+  private final SparkMaxConfig config = new SparkMaxConfig();
+  private final SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);
+  private final SparkMax leftBackMotor = new SparkMax(4, MotorType.kBrushless);
+  private final SparkMax rightFrontMotor = new SparkMax(2, MotorType.kBrushless);
+  private final SparkMax rightBackMotor = new SparkMax(3, MotorType.kBrushless);
 
-  private RelativeEncoder leftFrontEncoder = leftFrontMotor.getEncoder();
-  private RelativeEncoder rightFrontEncoder = rightFrontMotor.getEncoder();
+  private final RelativeEncoder leftFrontEncoder = leftFrontMotor.getEncoder();
+  private final RelativeEncoder rightFrontEncoder = rightFrontMotor.getEncoder();
+
+  private double leftVolts = 0.0;
+  private double rightVolts = 0.0;
 
   /** Creates a new Drivetrain. */
   private Drivetrain() {
@@ -72,24 +75,26 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void setLeftMotors (double volts) {
-    double currentVolts = leftFrontMotor.get() * 12.0;
-    double newVolts = currentVolts + speedPID.calculate(currentVolts - volts);
+    double newVolts = leftVolts + speedPID.calculate(leftVolts - volts);
 
-    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/LeftInput", currentVolts);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/LeftInput", leftVolts);
     Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/LeftTarget", volts);
     Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/LeftOutput", newVolts);
+
     leftFrontMotor.setVoltage(newVolts);
     leftBackMotor.setVoltage(newVolts);
+    leftVolts = newVolts;
   }
   public void setRightMotors (double volts) {
-    double currentVolts = rightFrontMotor.get() * 12.0;
-    double newVolts = currentVolts + speedPID.calculate(currentVolts - volts);
+    double newVolts = rightVolts + speedPID.calculate(rightVolts - volts);
 
-    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/RightInput", currentVolts);
+    Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/RightInput", rightVolts);
     Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/RightTarget", volts);
     Logger.recordOutput("TankDrive/DrivetrainSubsystem/Speed/RightOutput", newVolts);
+
     rightFrontMotor.setVoltage(newVolts);
     rightBackMotor.setVoltage(newVolts);
+    rightVolts = newVolts;
   }
   public void setMotors (double lVolts, double rVolts) {
     setLeftMotors(lVolts);
