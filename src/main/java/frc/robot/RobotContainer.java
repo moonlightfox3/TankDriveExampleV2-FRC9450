@@ -22,7 +22,7 @@ import frc.robot.subsystems.Drivetrain;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer { // TODO: Use LoggedNetworkNumbers for PID values (fix for drivetrain, use for arm)
+public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final Drivetrain m_drivetrain = Drivetrain.getInstance();
   public final Arm m_arm = Arm.getInstance();

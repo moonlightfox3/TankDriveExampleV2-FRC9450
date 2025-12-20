@@ -26,9 +26,9 @@ public class Drivetrain extends SubsystemBase {
 
   private final PIDController speedPID = new PIDController(0.2, 0.0, 0.0);
 
-  private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/P", speedPID.getP());
-  private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/I", speedPID.getI());
-  private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/D", speedPID.getD());
+  private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/P", 0.0);
+  private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/I", 0.0);
+  private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/D", 0.0);
 
   private final SparkMaxConfig config = new SparkMaxConfig();
   private final SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);
@@ -44,6 +44,10 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new Drivetrain. */
   private Drivetrain() {
+    speedPIDLogP.set(speedPID.getP());
+    speedPIDLogI.set(speedPID.getI());
+    speedPIDLogD.set(speedPID.getD());
+
     config.encoder.positionConversionFactor(POS_CONVERT_FACTOR);
 
     config.inverted(false);
@@ -61,12 +65,12 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double pValue = speedPIDLogP.get();
-    if (pValue != speedPID.getP()) speedPID.setP(pValue);
-    double iValue = speedPIDLogI.get();
-    if (iValue != speedPID.getI()) speedPID.setI(iValue);
-    double dValue = speedPIDLogD.get();
-    if (dValue != speedPID.getD()) speedPID.setD(dValue);
+    double speedPValue = speedPIDLogP.get();
+    if (speedPValue != speedPID.getP()) speedPID.setP(speedPValue);
+    double speedIValue = speedPIDLogI.get();
+    if (speedIValue != speedPID.getI()) speedPID.setI(speedIValue);
+    double speedDValue = speedPIDLogD.get();
+    if (speedDValue != speedPID.getD()) speedPID.setD(speedDValue);
   }
 
   public double getLeftDistanceInch() {
