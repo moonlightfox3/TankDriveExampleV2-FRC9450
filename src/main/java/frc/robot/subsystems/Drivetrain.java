@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
@@ -24,6 +25,10 @@ public class Drivetrain extends SubsystemBase {
   private static final double POS_CONVERT_FACTOR = 1.0 / 8.0; // Gearbox
 
   private final PIDController speedPID = new PIDController(0.2, 0.0, 0.0);
+
+  private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/P", speedPID.getP());
+  private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/I", speedPID.getI());
+  private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/D", speedPID.getD());
 
   private final SparkMaxConfig config = new SparkMaxConfig();
   private final SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);
@@ -52,6 +57,16 @@ public class Drivetrain extends SubsystemBase {
   public static Drivetrain getInstance() {
     if (instance == null) instance = new Drivetrain();
     return instance;
+  }
+
+  @Override
+  public void periodic() {
+    double pValue = speedPIDLogP.get();
+    if (pValue != speedPID.getP()) speedPID.setP(pValue);
+    double iValue = speedPIDLogI.get();
+    if (iValue != speedPID.getI()) speedPID.setI(iValue);
+    double dValue = speedPIDLogD.get();
+    if (dValue != speedPID.getD()) speedPID.setD(dValue);
   }
 
   public double getLeftDistanceInch() {

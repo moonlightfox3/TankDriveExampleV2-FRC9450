@@ -48,9 +48,11 @@ public class Arm extends SubsystemBase {
   public void setMotor(double volts) {
     double position = getPosition();
     if ((position <= CLOSE_LIMIT && volts < 0) || (position >= FAR_LIMIT && volts > 0)) volts = 0;
-
     double newVolts = oldVolts + speedPID.calculate(oldVolts - volts);
+
+    Logger.recordOutput("TankDrive/ArmSubsystem/Speed/Input", oldVolts);
     Logger.recordOutput("TankDrive/ArmSubsystem/Speed/Target", volts);
+    Logger.recordOutput("TankDrive/ArmSubsystem/Speed/Output", newVolts);
 
     motor.setVoltage(newVolts);
     oldVolts = newVolts;
@@ -60,6 +62,6 @@ public class Arm extends SubsystemBase {
     if (position > FAR_LIMIT) position = FAR_LIMIT;
 
     double volts = positionPID.calculate(getPosition() - position);
-    motor.setVoltage(volts);
+    setMotor(volts);
   }
 }
