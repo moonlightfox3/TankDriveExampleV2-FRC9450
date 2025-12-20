@@ -33,7 +33,7 @@ public class MoveJoystickCommand extends Command {
   public void execute() {
     double speed = -m_controller.getLeftY();
     if (Math.abs(speed) < DEADBAND_SIZE) {
-      m_drivetrain.setMotors(0.0, 0.0);
+      m_drivetrain.setAllMotors(0.0);
       return;
     }
     double lSpeed = speed; double rSpeed = speed;

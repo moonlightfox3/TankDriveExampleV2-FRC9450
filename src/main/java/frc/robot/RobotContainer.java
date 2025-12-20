@@ -9,7 +9,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoForwardCommand;
+import frc.robot.commands.MoveArmButtonCommand;
+import frc.robot.commands.MoveArmToPositionCommand;
 import frc.robot.commands.MoveJoystickCommand;
+import frc.robot.commands.ZeroArmCommand;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -18,9 +22,10 @@ import frc.robot.subsystems.Drivetrain;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer { // TODO: Use LoggedNetworkNumbers for PID values?
   // The robot's subsystems and commands are defined here...
   public final Drivetrain m_drivetrain = Drivetrain.getInstance();
+  public final Arm m_arm = Arm.getInstance();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final CommandPS4Controller m_driverController = new CommandPS4Controller(0);
@@ -42,6 +47,13 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drivetrain.setDefaultCommand(new MoveJoystickCommand(m_drivetrain, m_driverController));
+    m_arm.setDefaultCommand(new MoveArmButtonCommand(m_arm, m_driverController));
+
+    m_driverController.options().onTrue(new ZeroArmCommand(m_arm));
+
+    m_driverController.circle().onTrue(new MoveArmToPositionCommand(m_arm, 2.0));
+    m_driverController.triangle().onTrue(new MoveArmToPositionCommand(m_arm, 9.75));
+    m_driverController.square().onTrue(new MoveArmToPositionCommand(m_arm, 17.5));
   }
 
   /**

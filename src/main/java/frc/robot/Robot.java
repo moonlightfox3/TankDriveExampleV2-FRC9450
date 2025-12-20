@@ -66,6 +66,9 @@ public class Robot extends LoggedRobot {
     double rightDistance = m_robotContainer.m_drivetrain.getRightDistanceInch();
     Logger.recordOutput("TankDrive/DrivetrainSubsystem/Position/LeftDistance", leftDistance);
     Logger.recordOutput("TankDrive/DrivetrainSubsystem/Position/RightDistance", rightDistance);
+
+    double armPosition = m_robotContainer.m_arm.getPosition();
+    Logger.recordOutput("TankDrive/ArmSubsystem/Position", armPosition);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

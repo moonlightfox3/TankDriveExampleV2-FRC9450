@@ -23,7 +23,7 @@ public class Drivetrain extends SubsystemBase {
   public static final double WHEEL_CIRCUMFERENCE_INCH = Math.PI * WHEEL_DIAMETER_INCH;
   private static final double POS_CONVERT_FACTOR = 1.0 / 8.0; // Gearbox
 
-  private final PIDController speedPID = new PIDController(0.2, 0, 0);
+  private final PIDController speedPID = new PIDController(0.2, 0.0, 0.0);
 
   private final SparkMaxConfig config = new SparkMaxConfig();
   private final SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);
