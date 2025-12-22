@@ -17,8 +17,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Drivetrain extends SubsystemBase {
-  private static Drivetrain instance = null;
+public class DrivetrainSubsystem extends SubsystemBase {
+  private static DrivetrainSubsystem instance = null;
 
   public static final double WHEEL_DIAMETER_INCH = 6;
   public static final double WHEEL_CIRCUMFERENCE_INCH = Math.PI * WHEEL_DIAMETER_INCH;
@@ -26,9 +26,9 @@ public class Drivetrain extends SubsystemBase {
 
   private final PIDController speedPID = new PIDController(0.2, 0.0, 0.0);
 
-  private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/P", 0.0);
-  private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/I", 0.0);
-  private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/PID/Speed/D", 0.0);
+  private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/Speed/PID/P", 0.0);
+  private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/Speed/PID/I", 0.0);
+  private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/Speed/PID/D", 0.0);
 
   private final SparkMaxConfig config = new SparkMaxConfig();
   private final SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);
@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
   private double rightVolts = 0.0;
 
   /** Creates a new Drivetrain. */
-  private Drivetrain() {
+  private DrivetrainSubsystem() {
     speedPIDLogP.set(speedPID.getP());
     speedPIDLogI.set(speedPID.getI());
     speedPIDLogD.set(speedPID.getD());
@@ -58,8 +58,8 @@ public class Drivetrain extends SubsystemBase {
     rightFrontMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     rightBackMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
-  public static Drivetrain getInstance() {
-    if (instance == null) instance = new Drivetrain();
+  public static DrivetrainSubsystem getInstance() {
+    if (instance == null) instance = new DrivetrainSubsystem();
     return instance;
   }
 

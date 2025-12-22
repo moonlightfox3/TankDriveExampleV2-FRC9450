@@ -12,9 +12,8 @@ import frc.robot.commands.AutoForwardCommand;
 import frc.robot.commands.MoveArmButtonCommand;
 import frc.robot.commands.MoveArmToPositionCommand;
 import frc.robot.commands.MoveJoystickCommand;
-import frc.robot.commands.ZeroArmCommand;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,8 +23,8 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public final Drivetrain m_drivetrain = Drivetrain.getInstance();
-  public final Arm m_arm = Arm.getInstance();
+  public final DrivetrainSubsystem m_drivetrain = DrivetrainSubsystem.getInstance();
+  public final ArmSubsystem m_arm = ArmSubsystem.getInstance();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final CommandPS4Controller m_driverController = new CommandPS4Controller(0);
@@ -48,8 +47,6 @@ public class RobotContainer {
   private void configureBindings() {
     m_drivetrain.setDefaultCommand(new MoveJoystickCommand(m_drivetrain, m_driverController));
     m_arm.setDefaultCommand(new MoveArmButtonCommand(m_arm, m_driverController));
-
-    m_driverController.options().onTrue(new ZeroArmCommand(m_arm));
 
     m_driverController.circle().onTrue(new MoveArmToPositionCommand(m_arm, 2.0));
     m_driverController.triangle().onTrue(new MoveArmToPositionCommand(m_arm, 9.75));

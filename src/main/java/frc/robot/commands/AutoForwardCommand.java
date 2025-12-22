@@ -5,18 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 /* Moves the robot forward for a distance. */
 public class AutoForwardCommand extends Command {
-  private Drivetrain m_drivetrain;
+  private DrivetrainSubsystem m_drivetrain;
 
   private static final double MOVE_VOLTS = 1.2;
   private static final double MOVE_DIST_FEET = 2.0;
   private static final double END_OFFSET_FEET = 1.0 / 2.0;
 
   /** Creates a new AutoForwardCommand. */
-  public AutoForwardCommand(Drivetrain drivetrain) {
+  public AutoForwardCommand(DrivetrainSubsystem drivetrain) {
     addRequirements(drivetrain);
     m_drivetrain = drivetrain;
   }
