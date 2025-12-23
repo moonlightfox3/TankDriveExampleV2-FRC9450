@@ -42,7 +42,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double leftVolts = 0.0;
   private double rightVolts = 0.0;
 
-  /** Creates a new Drivetrain. */
+  /** Creates a new DrivetrainSubsystem. */
   private DrivetrainSubsystem() {
     speedPIDLogP.set(speedPID.getP());
     speedPIDLogI.set(speedPID.getI());

@@ -47,7 +47,7 @@ public class ArmSubsystem extends SubsystemBase {
   private final LoggedNetworkNumber requestLogAcc = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/Acceleration", 0.0);
   private final LoggedNetworkNumber requestLogJerk = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/Jerk", 0.0);
 
-  /** Creates a new Arm. */
+  /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     motorConfig = new TalonFXConfiguration();
     slot0 = motorConfig.Slot0;
