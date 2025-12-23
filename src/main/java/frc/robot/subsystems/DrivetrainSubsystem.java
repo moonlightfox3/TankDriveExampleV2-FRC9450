@@ -24,7 +24,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public static final double WHEEL_CIRCUMFERENCE_INCH = Math.PI * WHEEL_DIAMETER_INCH;
   private static final double POS_CONVERT_FACTOR = 1.0 / 8.0; // Gearbox
 
-  private final PIDController speedPID = new PIDController(0.2, 0.0, 0.0);
+  private final PIDController speedPID = new PIDController(0.4, 0.0, 0.0);
 
   private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/Speed/PID/P", 0.0);
   private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/Speed/PID/I", 0.0);

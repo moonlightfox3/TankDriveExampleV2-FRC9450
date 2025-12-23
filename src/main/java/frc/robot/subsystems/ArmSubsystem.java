@@ -22,7 +22,7 @@ public class ArmSubsystem extends SubsystemBase {
   private static final double CLOSE_LIMIT = 2.0;
   private static final double FAR_LIMIT = 17.5;
   
-  private final PIDController speedPID = new PIDController(0.6, 0.0, 0.0);
+  private final PIDController speedPID = new PIDController(1.0, 0.0, 0.0);
   
   private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/PID/P", 0.0);
   private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/PID/I", 0.0);
@@ -52,9 +52,9 @@ public class ArmSubsystem extends SubsystemBase {
     motorConfig = new TalonFXConfiguration();
     slot0 = motorConfig.Slot0;
     slot0.kS = 0.1; // Overcome static friction
-    slot0.kV = 0.5; // Target velocity
+    slot0.kV = 0.1; // Target velocity
     slot0.kA = 0.0; // Target acceleration
-    slot0.kP = 6.0; // Error in position
+    slot0.kP = 8.0; // Error in position
     slot0.kI = 0.0; // Integrated error in position
     slot0.kD = 0.0; // Error in velocity
     slot0.kG = 0.2; // Overcome gravity
@@ -62,8 +62,8 @@ public class ArmSubsystem extends SubsystemBase {
     slot0.GravityType = GravityTypeValue.Arm_Cosine;
     motorConfig.Slot0 = slot0;
 
-    motorConfig.MotionMagic.MotionMagicCruiseVelocity = 30.0;
-    motorConfig.MotionMagic.MotionMagicAcceleration = 30.0;
+    motorConfig.MotionMagic.MotionMagicCruiseVelocity = 40.0;
+    motorConfig.MotionMagic.MotionMagicAcceleration = 100.0;
     motorConfig.MotionMagic.MotionMagicJerk = 1000.0;
     applyConfig();
     
