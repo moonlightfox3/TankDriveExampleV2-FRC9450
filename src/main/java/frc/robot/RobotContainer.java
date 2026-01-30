@@ -14,6 +14,7 @@ import frc.robot.commands.MoveArmToPositionCommand;
 import frc.robot.commands.MoveJoystickCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,6 +26,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final DrivetrainSubsystem m_drivetrain = DrivetrainSubsystem.getInstance();
   public final ArmSubsystem m_arm = ArmSubsystem.getInstance();
+  public final LEDSubsystem m_leds = LEDSubsystem.getInstance();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final CommandPS4Controller m_driverController = new CommandPS4Controller(0);
@@ -47,6 +49,7 @@ public class RobotContainer {
   private void configureBindings() {
     m_drivetrain.setDefaultCommand(new MoveJoystickCommand(m_drivetrain, m_driverController));
     m_arm.setDefaultCommand(new MoveArmButtonCommand(m_arm, m_driverController));
+    m_leds.setColor(180, 1, 1);
 
     m_driverController.circle().onTrue(new MoveArmToPositionCommand(m_arm, 2.0));
     m_driverController.triangle().onTrue(new MoveArmToPositionCommand(m_arm, 9.75));
