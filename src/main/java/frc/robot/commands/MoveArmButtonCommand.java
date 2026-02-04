@@ -5,20 +5,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.ArmSubsystem;
 
 /* Default command to move the arm with a joystick. */
 public class MoveArmButtonCommand extends Command {
   private ArmSubsystem m_arm;
-  private CommandPS4Controller m_controller;
+  private CommandXboxController m_controller;
   
   private static final double SPEED = 2.0;
   
   private boolean useMotionMagicWasPressed = false;
 
   /** Creates a new MoveArmJoystickCommand. */
-  public MoveArmButtonCommand(ArmSubsystem arm, CommandPS4Controller controller) {
+  public MoveArmButtonCommand(ArmSubsystem arm, CommandXboxController controller) {
     addRequirements(arm);
     m_arm = arm;
     m_controller = controller;
@@ -32,7 +32,7 @@ public class MoveArmButtonCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean useMotionMagicPressed = m_controller.R1().getAsBoolean();
+    boolean useMotionMagicPressed = m_controller.rightBumper().getAsBoolean();
     if (useMotionMagicPressed && !useMotionMagicWasPressed) m_arm.usingMotionMagic = false;
     if (!useMotionMagicPressed && useMotionMagicWasPressed) m_arm.usingMotionMagic = true;
     useMotionMagicWasPressed = useMotionMagicPressed;

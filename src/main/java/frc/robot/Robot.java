@@ -80,7 +80,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void disabledPeriodic() {
-    boolean zeroPressed = m_robotContainer.m_driverController.options().getAsBoolean();
+    boolean zeroPressed = m_robotContainer.m_driverController.start().getAsBoolean();
     if (zeroPressed && !zeroWasPressed) m_robotContainer.m_arm.resetPosition();
     zeroWasPressed = zeroPressed;
   }

@@ -5,19 +5,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 /* Default command to move with a joystick. */
 public class MoveJoystickCommand extends Command {
   private DrivetrainSubsystem m_drivetrain;
-  private CommandPS4Controller m_controller;
+  private CommandXboxController m_controller;
 
   private static final double DEADBAND_SIZE = 0.03;
   private static final double SPEED_MUL = 0.1;
 
   /** Creates a new MoveJoystickCommand. */
-  public MoveJoystickCommand(DrivetrainSubsystem drivetrain, CommandPS4Controller controller) {
+  public MoveJoystickCommand(DrivetrainSubsystem drivetrain, CommandXboxController controller) {
     addRequirements(drivetrain);
     m_drivetrain = drivetrain;
     m_controller = controller;

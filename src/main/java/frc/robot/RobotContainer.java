@@ -5,10 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoForwardCommand;
+import frc.robot.commands.LEDControlCommand;
 import frc.robot.commands.MoveArmButtonCommand;
 import frc.robot.commands.MoveArmToPositionCommand;
 import frc.robot.commands.MoveJoystickCommand;
@@ -29,7 +29,7 @@ public class RobotContainer {
   public final LEDSubsystem m_leds = LEDSubsystem.getInstance();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  public final CommandPS4Controller m_driverController = new CommandPS4Controller(0);
+  public final CommandXboxController m_driverController = new CommandXboxController(0);
 
   /** The container for the robot. Contains subsystems, IO devices, and commands. */
   public RobotContainer() {
@@ -49,11 +49,11 @@ public class RobotContainer {
   private void configureBindings() {
     m_drivetrain.setDefaultCommand(new MoveJoystickCommand(m_drivetrain, m_driverController));
     m_arm.setDefaultCommand(new MoveArmButtonCommand(m_arm, m_driverController));
-    m_leds.setColor(180, 1, 1);
+    m_leds.setDefaultCommand(new LEDControlCommand(m_leds, m_driverController).ignoringDisable(true));
 
-    m_driverController.circle().onTrue(new MoveArmToPositionCommand(m_arm, 2.0));
-    m_driverController.triangle().onTrue(new MoveArmToPositionCommand(m_arm, 9.75));
-    m_driverController.square().onTrue(new MoveArmToPositionCommand(m_arm, 17.5));
+    m_driverController.b().onTrue(new MoveArmToPositionCommand(m_arm, 2.0));
+    m_driverController.y().onTrue(new MoveArmToPositionCommand(m_arm, 9.75));
+    m_driverController.x().onTrue(new MoveArmToPositionCommand(m_arm, 17.5));
   }
 
   /**
