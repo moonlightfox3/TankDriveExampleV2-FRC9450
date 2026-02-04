@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.CANdleConfiguration;
 import com.ctre.phoenix6.controls.SolidColor;
 import com.ctre.phoenix6.hardware.CANdle;
+import com.ctre.phoenix6.signals.LossOfSignalBehaviorValue;
 import com.ctre.phoenix6.signals.RGBWColor;
+import com.ctre.phoenix6.signals.StatusLedWhenActiveValue;
 import com.ctre.phoenix6.signals.StripTypeValue;
 
 import edu.wpi.first.math.MathUtil;
@@ -31,6 +33,8 @@ public class LEDSubsystem extends SubsystemBase {
     }
     private void configureCANdle() {
         CANdleConfiguration candleConfig = new CANdleConfiguration();
+        candleConfig.CANdleFeatures.StatusLedWhenActive = StatusLedWhenActiveValue.Disabled;
+        candleConfig.LED.LossOfSignalBehavior = LossOfSignalBehaviorValue.DisableLEDs;
         candleConfig.LED.StripType = StripTypeValue.RGB;
 
         candle.getConfigurator().apply(candleConfig);
