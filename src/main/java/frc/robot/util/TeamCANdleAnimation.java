@@ -21,10 +21,12 @@ public class TeamCANdleAnimation {
   public static final RGBWColor BLUE_GRADIENT = new RGBWColor(0, 26, 165);
   public static final RGBWColor ORANGE_GRADIENT = new RGBWColor(255, 41, 0);
   private RGBWColor[] COLORS = new RGBWColor[6];
+  private RGBWColor[] COLORS_CANDLE = new RGBWColor[8];
 
   private final Timer timer = new Timer();
   private boolean hasStarted = false;
   private int offset = 0;
+  private int offsetCandle = 0;
 
   /** Creates a new TeamCANdleAnimation. */
   public TeamCANdleAnimation(LEDSubsystem leds) {
@@ -37,14 +39,27 @@ public class TeamCANdleAnimation {
     COLORS[2] = ORANGE.scaleBrightness(BRIGHTNESS);
     COLORS[1] = ORANGE_GRADIENT.scaleBrightness(BRIGHTNESS);
     COLORS[0] = BLUE_GRADIENT.scaleBrightness(BRIGHTNESS);
+
+    // Intentionally reversed indexes
+    COLORS_CANDLE[7] = BLUE.scaleBrightness(BRIGHTNESS);
+    COLORS_CANDLE[6] = BLUE.scaleBrightness(BRIGHTNESS);
+    COLORS_CANDLE[5] = BLUE.scaleBrightness(BRIGHTNESS);
+    COLORS_CANDLE[4] = BLUE.scaleBrightness(BRIGHTNESS);
+    COLORS_CANDLE[3] = ORANGE.scaleBrightness(BRIGHTNESS);
+    COLORS_CANDLE[2] = ORANGE.scaleBrightness(BRIGHTNESS);
+    COLORS_CANDLE[1] = ORANGE.scaleBrightness(BRIGHTNESS);
+    COLORS_CANDLE[0] = ORANGE.scaleBrightness(BRIGHTNESS);
   }
 
   // Called when the command is initially scheduled.
   public void initialize() {
-    m_leds.setRange(0, LEDSubsystem.NUM_LEDS);
+    m_leds.setRange(0, LEDSubsystem.HIGHEST_INDEX);
     m_leds.setColor(LEDSubsystem.EMPTY_COLOR);
+    m_leds.applyControl();
+
     hasStarted = false;
     offset = 0;
+    offsetCandle = 0;
     timer.restart();
   }
 
@@ -53,8 +68,8 @@ public class TeamCANdleAnimation {
     if (timer.advanceIfElapsed(1.0 / FRAMERATE) || !hasStarted) {
       hasStarted = true;
 
-      int ledOffset = COLORS.length - 1 - (LEDSubsystem.NUM_LEDS % COLORS.length);
-      for (int led = LEDSubsystem.NUM_LEDS; led >= 0; led--) {
+      int ledOffset = COLORS.length - ((LEDSubsystem.HIGHEST_INDEX + 1 - 8) % COLORS.length);
+      for (int led = LEDSubsystem.HIGHEST_INDEX; led >= 8; led--) {
         int colorIndex = (offset + ledOffset) % COLORS.length;
         ledOffset++;
 
@@ -62,15 +77,25 @@ public class TeamCANdleAnimation {
         m_leds.setColor(COLORS[colorIndex]);
         m_leds.applyControl();
       }
-
       offset = (offset + 1) % COLORS.length;
+
+      int ledOffsetCandle = COLORS_CANDLE.length - (8 % COLORS_CANDLE.length);
+      for (int led = 7; led >= 0; led--) {
+        int colorIndexCandle = (offsetCandle + ledOffsetCandle) % COLORS_CANDLE.length;
+        ledOffsetCandle++;
+
+        m_leds.setRange(led, led);
+        m_leds.setColor(COLORS_CANDLE[colorIndexCandle]);
+        m_leds.applyControl();
+      }
+      offsetCandle = (offsetCandle + 1) % COLORS_CANDLE.length;
     }
   }
 
   // Called once the command ends or is interrupted.
   public void end() {
     timer.stop();
-    m_leds.setRange(0, LEDSubsystem.NUM_LEDS);
+    m_leds.setRange(0, LEDSubsystem.HIGHEST_INDEX);
     m_leds.setColor(LEDSubsystem.EMPTY_COLOR);
     m_leds.applyControl();
   }

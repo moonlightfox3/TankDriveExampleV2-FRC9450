@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LEDSubsystem extends SubsystemBase {
     private static LEDSubsystem INSTANCE;
 
-    public static final int NUM_LEDS = 107;
+    public static final int HIGHEST_INDEX = 107;
     public static final RGBWColor EMPTY_COLOR = new RGBWColor(0, 0, 0);
 
     public static LEDSubsystem getInstance() {
@@ -27,7 +27,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     public LEDSubsystem() {
         configureCANdle();
-        setRange(0, NUM_LEDS);
+        setRange(0, HIGHEST_INDEX);
         setColor(EMPTY_COLOR);
         applyControl();
         setRange(0, 0);
@@ -77,11 +77,11 @@ public class LEDSubsystem extends SubsystemBase {
         return solidColorRequest.LEDEndIndex;
     }
     public void setStart(int index) {
-        if (index < 0) index = 0; if (index > NUM_LEDS) index = NUM_LEDS;
+        if (index < 0) index = 0; if (index > HIGHEST_INDEX) index = HIGHEST_INDEX;
         solidColorRequest.LEDStartIndex = index;
     }
     public void setEnd(int index) {
-        if (index < 0) index = 0; if (index > NUM_LEDS) index = NUM_LEDS;
+        if (index < 0) index = 0; if (index > HIGHEST_INDEX) index = HIGHEST_INDEX;
         solidColorRequest.LEDEndIndex = index;
     }
 

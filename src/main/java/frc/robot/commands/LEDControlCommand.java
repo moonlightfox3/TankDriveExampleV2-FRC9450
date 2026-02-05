@@ -63,7 +63,7 @@ public class LEDControlCommand extends Command {
     }
 
     if (m_controller.back().getAsBoolean()) {
-      m_leds.setRange(8, LEDSubsystem.NUM_LEDS);
+      m_leds.setRange(8, LEDSubsystem.HIGHEST_INDEX);
       m_leds.setColor(LEDSubsystem.EMPTY_COLOR);
       m_leds.applyControl();
 
@@ -75,11 +75,11 @@ public class LEDControlCommand extends Command {
     if (m_controller.rightBumper().getAsBoolean()) {
       if (!rightPressed) {
         rightPressed = true;
-        if (endIndex < LEDSubsystem.NUM_LEDS) {
+        if (endIndex < LEDSubsystem.HIGHEST_INDEX) {
           if (m_controller.y().getAsBoolean()) endIndex++;
           else {
             endIndex += 5;
-            if (endIndex > LEDSubsystem.NUM_LEDS) endIndex = LEDSubsystem.NUM_LEDS;
+            if (endIndex > LEDSubsystem.HIGHEST_INDEX) endIndex = LEDSubsystem.HIGHEST_INDEX;
           }
           m_leds.setEnd(endIndex);
         }
