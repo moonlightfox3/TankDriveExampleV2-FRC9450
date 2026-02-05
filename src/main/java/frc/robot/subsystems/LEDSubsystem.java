@@ -15,6 +15,7 @@ public class LEDSubsystem extends SubsystemBase {
     private static LEDSubsystem INSTANCE;
 
     public static final int NUM_LEDS = 107;
+    public static final RGBWColor EMPTY_COLOR = new RGBWColor(0, 0, 0);
 
     public static LEDSubsystem getInstance() {
         if (INSTANCE == null) INSTANCE = new LEDSubsystem();
@@ -22,12 +23,12 @@ public class LEDSubsystem extends SubsystemBase {
     }
     
     private CANdle candle = new CANdle(40, "CantDrive");
-    private SolidColor solidColorRequest = new SolidColor(0, 8).withColor(RGBWColor.fromHSV(0, 1, 1));
+    private SolidColor solidColorRequest = new SolidColor(0, 8).withColor(EMPTY_COLOR);
 
     public LEDSubsystem() {
         configureCANdle();
         setRange(0, NUM_LEDS);
-        setColor(0, 1, 1, 0);
+        setColor(EMPTY_COLOR);
         applyControl();
         setRange(0, 0);
     }
@@ -54,25 +55,16 @@ public class LEDSubsystem extends SubsystemBase {
      * @param h Hue, range of: { 0-360 }
      * @param s Saturation, range of: { 0-1 }
      * @param v Value, range of: { 0-1 }
-     * @param bright Brightness, range of: { 0-1 }
+     * @param brightness Brightness, range of: { 0-1 }
      */
-    public void setColor(double h, double s, double v, double bright) {
+    public void setColor(double h, double s, double v, double brightness) {
         h = MathUtil.clamp(h, 0, 360);
         s = MathUtil.clamp(s, 0, 1);
         v = MathUtil.clamp(v, 0, 1);
-        solidColorRequest.Color = RGBWColor.fromHSV(h, s, v).scaleBrightness(bright);
+        solidColorRequest.Color = RGBWColor.fromHSV(h, s, v).scaleBrightness(brightness);
     }
-    /**
-     * Changes the color that the CANdle sets the LEDs to.
-     * @param h Hue, range of: { 0-360 }
-     * @param s Saturation, range of: { 0-1 }
-     * @param v Value, range of: { 0-1 }
-     */
-    public void setColor(double h, double s, double v) {
-        h = MathUtil.clamp(h, 0, 360);
-        s = MathUtil.clamp(s, 0, 1);
-        v = MathUtil.clamp(v, 0, 1);
-        solidColorRequest.Color = RGBWColor.fromHSV(h, s, v);
+    public void setColor(RGBWColor color) {
+        solidColorRequest.Color = color;
     }
     public RGBWColor getColor() {
         return solidColorRequest.Color;

@@ -23,13 +23,13 @@ import frc.robot.subsystems.LEDSubsystem;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  // Replace with CommandPS4Controller or CommandJoystick if needed
+  public final CommandXboxController m_driverController = new CommandXboxController(0);
+
   // The robot's subsystems and commands are defined here...
   public final DrivetrainSubsystem m_drivetrain = DrivetrainSubsystem.getInstance();
   public final ArmSubsystem m_arm = ArmSubsystem.getInstance();
   public final LEDSubsystem m_leds = LEDSubsystem.getInstance();
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  public final CommandXboxController m_driverController = new CommandXboxController(0);
 
   /** The container for the robot. Contains subsystems, IO devices, and commands. */
   public RobotContainer() {

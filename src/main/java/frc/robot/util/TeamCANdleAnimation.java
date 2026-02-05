@@ -6,42 +6,72 @@ package frc.robot.util;
 
 import com.ctre.phoenix6.signals.RGBWColor;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.LEDSubsystem;
 
 /* Displays a custom CANdle animation. */
-public class TeamCANdleAnimation extends Command {
+public class TeamCANdleAnimation {
   private LEDSubsystem m_leds;
 
-  public static final RGBWColor BLUE = RGBWColor.fromHSV(239.0, 1.0, 0.11);
-  public static final RGBWColor ORANGE = RGBWColor.fromHSV(4.0, 1.0, 1.0);
-  public static final RGBWColor BLUE_GRADIENT = new RGBWColor((BLUE.Red + ORANGE.Red) / 3, (BLUE.Green + ORANGE.Green) / 3, (BLUE.Blue + ORANGE.Blue) / 3);
-  public static final RGBWColor ORANGE_GRADIENT = new RGBWColor((BLUE.Red + ORANGE.Red) / 3 * 2, (BLUE.Green + ORANGE.Green) / 3 * 2, (BLUE.Blue + ORANGE.Blue) / 3 * 2);
+  public static final double FRAMERATE = 6.0;
+  private final double BRIGHTNESS = 1.0;
+
+  public static final RGBWColor BLUE = new RGBWColor(0, 0, 40);
+  public static final RGBWColor ORANGE = new RGBWColor(255, 17, 0);
+  public static final RGBWColor BLUE_GRADIENT = new RGBWColor(0, 26, 165);
+  public static final RGBWColor ORANGE_GRADIENT = new RGBWColor(255, 41, 0);
+  private RGBWColor[] COLORS = new RGBWColor[6];
+
+  private final Timer timer = new Timer();
+  private boolean hasStarted = false;
+  private int offset = 0;
 
   /** Creates a new TeamCANdleAnimation. */
   public TeamCANdleAnimation(LEDSubsystem leds) {
-    addRequirements(leds);
     m_leds = leds;
+
+    // Intentionally reversed indexes
+    COLORS[5] = BLUE.scaleBrightness(BRIGHTNESS);
+    COLORS[4] = BLUE_GRADIENT.scaleBrightness(BRIGHTNESS);
+    COLORS[3] = ORANGE_GRADIENT.scaleBrightness(BRIGHTNESS);
+    COLORS[2] = ORANGE.scaleBrightness(BRIGHTNESS);
+    COLORS[1] = ORANGE_GRADIENT.scaleBrightness(BRIGHTNESS);
+    COLORS[0] = BLUE_GRADIENT.scaleBrightness(BRIGHTNESS);
   }
 
   // Called when the command is initially scheduled.
-  @Override
   public void initialize() {
+    m_leds.setRange(0, LEDSubsystem.NUM_LEDS);
+    m_leds.setColor(LEDSubsystem.EMPTY_COLOR);
+    hasStarted = false;
+    offset = 0;
+    timer.restart();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-  @Override
   public void execute() {
+    if (timer.advanceIfElapsed(1.0 / FRAMERATE) || !hasStarted) {
+      hasStarted = true;
+
+      int ledOffset = COLORS.length - 1 - (LEDSubsystem.NUM_LEDS % COLORS.length);
+      for (int led = LEDSubsystem.NUM_LEDS; led >= 0; led--) {
+        int colorIndex = (offset + ledOffset) % COLORS.length;
+        ledOffset++;
+
+        m_leds.setRange(led, led);
+        m_leds.setColor(COLORS[colorIndex]);
+        m_leds.applyControl();
+      }
+
+      offset = (offset + 1) % COLORS.length;
+    }
   }
 
   // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+  public void end() {
+    timer.stop();
+    m_leds.setRange(0, LEDSubsystem.NUM_LEDS);
+    m_leds.setColor(LEDSubsystem.EMPTY_COLOR);
+    m_leds.applyControl();
   }
 }
