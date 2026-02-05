@@ -93,10 +93,15 @@ public class TeamCANdleAnimation {
   }
 
   // Called once the command ends or is interrupted.
-  public void end() {
+  public void end(boolean interrupted) {
     timer.stop();
     m_leds.setRange(0, LEDSubsystem.HIGHEST_INDEX);
     m_leds.setColor(LEDSubsystem.EMPTY_COLOR);
     m_leds.applyControl();
+  }
+
+  // Returns true when the command should end.
+  public boolean isFinished() {
+    return false;
   }
 }

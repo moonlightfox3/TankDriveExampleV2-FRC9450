@@ -56,7 +56,7 @@ public class LEDControlCommand extends Command {
       animation.execute();
       return;
     } else {
-      if (animationStarted) animation.end();
+      if (animationStarted) animation.end(true);
       animationStarted = false;
 
       m_leds.setRange(0, endIndex);
