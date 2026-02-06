@@ -12,6 +12,7 @@ import frc.robot.commands.LEDControlCommand;
 import frc.robot.commands.MoveArmButtonCommand;
 import frc.robot.commands.MoveArmToPositionCommand;
 import frc.robot.commands.MoveJoystickCommand;
+import frc.robot.commands.TeamCANdleAnimationCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -50,10 +51,12 @@ public class RobotContainer {
     m_drivetrain.setDefaultCommand(new MoveJoystickCommand(m_drivetrain, m_driverController));
     m_arm.setDefaultCommand(new MoveArmButtonCommand(m_arm, m_driverController));
     m_leds.setDefaultCommand(new LEDControlCommand(m_leds, m_driverController).ignoringDisable(true));
-
+    
     m_driverController.b().onTrue(new MoveArmToPositionCommand(m_arm, 2.0));
     m_driverController.y().onTrue(new MoveArmToPositionCommand(m_arm, 9.75));
     m_driverController.x().onTrue(new MoveArmToPositionCommand(m_arm, 17.5));
+    
+    m_driverController.start().toggleOnTrue((new TeamCANdleAnimationCommand(m_leds)).ignoringDisable(true));
   }
 
   /**

@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.util.TeamCANdleAnimation;
 
 /* Default command to control the LEDs. */
 public class LEDControlCommand extends Command {
@@ -24,17 +23,11 @@ public class LEDControlCommand extends Command {
   private boolean rightPressed = false;
   private boolean leftPressed = false;
 
-  private boolean useAnimation = false;
-  private boolean animationStarted = false;
-  private TeamCANdleAnimation animation;
-
   /** Creates a new LEDControlCommand. */
   public LEDControlCommand(LEDSubsystem leds, CommandXboxController controller) {
     addRequirements(leds);
     m_leds = leds;
     m_controller = controller;
-
-    animation = new TeamCANdleAnimation(m_leds);
   }
 
   // Called when the command is initially scheduled.
@@ -46,22 +39,6 @@ public class LEDControlCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_controller.rightTrigger().getAsBoolean()) useAnimation = true;
-    if (m_controller.leftTrigger().getAsBoolean()) useAnimation = false;
-
-    if (useAnimation) {
-      if (!animationStarted) animation.initialize();
-      animationStarted = true;
-
-      animation.execute();
-      return;
-    } else {
-      if (animationStarted) animation.end(true);
-      animationStarted = false;
-
-      m_leds.setRange(0, endIndex);
-    }
-
     if (m_controller.back().getAsBoolean()) {
       m_leds.setRange(8, LEDSubsystem.HIGHEST_INDEX);
       m_leds.setColor(LEDSubsystem.EMPTY_COLOR);
@@ -70,6 +47,8 @@ public class LEDControlCommand extends Command {
       m_leds.setRange(0, 7);
       endIndex = 7;
       hue = 333; saturation = 1; value = 1; brightness = 0.05;
+
+      changeType = 0;
     }
 
     if (m_controller.rightBumper().getAsBoolean()) {
@@ -148,6 +127,7 @@ public class LEDControlCommand extends Command {
     }
 
     if (m_controller.povUp().getAsBoolean() || m_controller.povDown().getAsBoolean() || m_controller.povRight().getAsBoolean() || m_controller.povLeft().getAsBoolean()) System.out.println("H: " + hue + ", S: " + saturation + ", V: " + value + ", B: " + brightness);
+    m_leds.setRange(0, endIndex);
     m_leds.setColor(hue, saturation, value, brightness);
   }
 

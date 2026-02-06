@@ -2,15 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.util;
+package frc.robot.commands;
 
 import com.ctre.phoenix6.signals.RGBWColor;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDSubsystem;
 
 /* Displays a custom CANdle animation. */
-public class TeamCANdleAnimation {
+public class TeamCANdleAnimationCommand extends Command {
   private LEDSubsystem m_leds;
 
   public static final double FRAMERATE = 6.0;
@@ -29,7 +30,8 @@ public class TeamCANdleAnimation {
   private int offsetCandle = 0;
 
   /** Creates a new TeamCANdleAnimation. */
-  public TeamCANdleAnimation(LEDSubsystem leds) {
+  public TeamCANdleAnimationCommand(LEDSubsystem leds) {
+    addRequirements(leds);
     m_leds = leds;
 
     // Intentionally reversed indexes
@@ -52,6 +54,7 @@ public class TeamCANdleAnimation {
   }
 
   // Called when the command is initially scheduled.
+  @Override
   public void initialize() {
     m_leds.setRange(0, LEDSubsystem.HIGHEST_INDEX);
     m_leds.setColor(LEDSubsystem.EMPTY_COLOR);
@@ -64,6 +67,7 @@ public class TeamCANdleAnimation {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
+  @Override
   public void execute() {
     if (timer.advanceIfElapsed(1.0 / FRAMERATE) || !hasStarted) {
       hasStarted = true;
@@ -93,6 +97,7 @@ public class TeamCANdleAnimation {
   }
 
   // Called once the command ends or is interrupted.
+  @Override
   public void end(boolean interrupted) {
     timer.stop();
     m_leds.setRange(0, LEDSubsystem.HIGHEST_INDEX);
@@ -101,6 +106,7 @@ public class TeamCANdleAnimation {
   }
 
   // Returns true when the command should end.
+  @Override
   public boolean isFinished() {
     return false;
   }
