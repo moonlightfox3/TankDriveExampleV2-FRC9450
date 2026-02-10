@@ -40,12 +40,12 @@ public class LEDControlCommand extends Command {
   @Override
   public void execute() {
     if (m_controller.back().getAsBoolean()) {
-      m_leds.setRange(8, LEDSubsystem.HIGHEST_INDEX);
+      m_leds.setRange(1, LEDSubsystem.HIGHEST_INDEX);
       m_leds.setColor(LEDSubsystem.EMPTY_COLOR);
       m_leds.applyControl();
 
-      m_leds.setRange(0, 7);
-      endIndex = 7;
+      m_leds.setRange(0, 0);
+      endIndex = 0;
       hue = 333; saturation = 1; value = 1; brightness = 0.05;
 
       changeType = 0;
