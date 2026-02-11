@@ -18,7 +18,7 @@ public class TeamCANdleAnimationCommand extends Command {
   private LEDSubsystem m_leds;
 
   // Config
-  public static final double FRAMERATE = 1.0;//6.0;
+  public static final double FRAMERATE = 6.0;
   private final double BASE_BRIGHTNESS = 1.0;
 
   // Color data
