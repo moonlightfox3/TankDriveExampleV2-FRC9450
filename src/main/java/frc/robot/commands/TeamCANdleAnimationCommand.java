@@ -14,22 +14,22 @@ import frc.robot.subsystems.LEDSubsystem;
 
 /* Displays a custom CANdle animation. */
 public class TeamCANdleAnimationCommand extends Command {
-  // Subsystems
+  // Command data
   private LEDSubsystem m_leds;
 
-  // Config
+  // Config - Options
   public static final double FRAMERATE = 6.0;
   private final double BASE_BRIGHTNESS = 1.0;
 
   // Config - Color data
-  public static final double[] BLUE_HSV = {240.0, 1.0, 0.16}; // RGB 0, 0, 40
-  public static final double[] ORANGE_HSV = {4.0, 1.0, 1.0}; // RGB 255, 17, 0
+  public static final RGBWColor BLUE              = new RGBWColor(  0,   5,  70);
+  public static final RGBWColor BLUE_GRADIENT     = new RGBWColor(  0,  11, 135);
+  public static final RGBWColor BLUE_GRADIENT_2   = new RGBWColor(  0,  15, 210);
+  public static final RGBWColor ORANGE            = new RGBWColor(255,  17,   0);
+  public static final RGBWColor ORANGE_GRADIENT   = new RGBWColor(220,  25,   0);
+  public static final RGBWColor ORANGE_GRADIENT_2 = new RGBWColor(225,  35,   0);
 
-  // Color data structures
-  public static final RGBWColor BLUE = RGBWColor.fromHSV(BLUE_HSV[0], BLUE_HSV[1], BLUE_HSV[2]);
-  public static final RGBWColor ORANGE = RGBWColor.fromHSV(ORANGE_HSV[0], ORANGE_HSV[1], ORANGE_HSV[2]);
-  // public static final RGBWColor BLUE_GRADIENT = new RGBWColor(0, 26, 165);
-  // public static final RGBWColor ORANGE_GRADIENT = new RGBWColor(255, 41, 0);
+  // Color arrays
   private ArrayList<RGBWColor> COLORS = new ArrayList<>();
   private ArrayList<RGBWColor> COLORS_CANDLE = new ArrayList<>();
 
@@ -44,11 +44,13 @@ public class TeamCANdleAnimationCommand extends Command {
     addRequirements(leds);
     m_leds = leds;
 
-    // Config - Color arrays
+    // Config - Color arrays data
 
     COLORS.add(BLUE);
-    addBlendedColorsToArray(COLORS, BLUE, /*BLUE.scaleBrightness(0.01)*/new RGBWColor(10, 20, 20), 3);
-    addBlendedColorsToArray(COLORS, /*ORANGE.scaleBrightness(0.01)*/new RGBWColor(35, 15, 2), ORANGE, 3);
+    COLORS.add(BLUE_GRADIENT);
+    COLORS.add(BLUE_GRADIENT_2);
+    COLORS.add(ORANGE_GRADIENT_2);
+    COLORS.add(ORANGE_GRADIENT);
     COLORS.add(ORANGE);
     addReversedColorsToArray(COLORS);
 
@@ -67,18 +69,7 @@ public class TeamCANdleAnimationCommand extends Command {
     reverseArray(COLORS);
     reverseArray(COLORS_CANDLE);
   }
-  private void addBlendedColorsToArray(ArrayList<RGBWColor> arr, RGBWColor color1, RGBWColor color2, int totalCount) {
-    double posAdd = 1.0 / (totalCount + 1);
-    for (int i = 0; i < totalCount; i++) {
-      double t = posAdd * (i + 1);
-      arr.add(new RGBWColor(
-        (int) ((1 - t) * color1.Red + t * color2.Red),
-        (int) ((1 - t) * color1.Green + t * color2.Green),
-        (int) ((1 - t) * color1.Blue + t * color2.Blue)
-      ));
-    }
-  }
-  private void addReversedColorsToArray(ArrayList<RGBWColor> arr) {
+  private void addReversedColorsToArray(ArrayList<RGBWColor> arr) { // a,b,c,d,e,f -> a,b,c,d,e,f,e,d,c,b
     int size = arr.size();
     for (int i = size - 2; i >= 1; i--) arr.add(arr.get(i));
   }
@@ -113,28 +104,22 @@ public class TeamCANdleAnimationCommand extends Command {
     if (timer.advanceIfElapsed(1.0 / FRAMERATE) || !hasStarted) {
       hasStarted = true;
 
-      int ledOffset = COLORS.size() - ((LEDSubsystem.HIGHEST_INDEX + 1 - 8) % COLORS.size());
-      for (int led = LEDSubsystem.HIGHEST_INDEX; led >= 8; led--) {
-        int colorIndex = (offset + ledOffset) % COLORS.size();
-        ledOffset++;
-
-        m_leds.setRange(led, led);
-        m_leds.setColor(COLORS.get(colorIndex));
-        m_leds.applyControl();
-      }
-      offset = (offset + 1) % COLORS.size();
-
-      int ledOffsetCandle = COLORS_CANDLE.size() - (8 % COLORS_CANDLE.size());
-      for (int led = 7; led >= 0; led--) {
-        int colorIndexCandle = (offsetCandle + ledOffsetCandle) % COLORS_CANDLE.size();
-        ledOffsetCandle++;
-
-        m_leds.setRange(led, led);
-        m_leds.setColor(COLORS_CANDLE.get(colorIndexCandle));
-        m_leds.applyControl();
-      }
-      offsetCandle = (offsetCandle + 1) % COLORS_CANDLE.size();
+      offset = animateSection(COLORS, offset, 8, LEDSubsystem.HIGHEST_INDEX);
+      offsetCandle = animateSection(COLORS_CANDLE, offsetCandle, 0, 7);
     }
+  }
+
+  private int animateSection(ArrayList<RGBWColor> arr, int offset, int start, int end) { // Set return value into offset variable
+    int ledOffset = arr.size() - ((end + 1 - start) % arr.size()); // Used to start the animation at the correct place
+    for (int led = end; led >= start; led--) {
+      int colorIndex = (offset + ledOffset) % arr.size();
+      ledOffset++;
+
+      m_leds.setRange(led, led);
+      m_leds.setColor(arr.get(colorIndex));
+      m_leds.applyControl();
+    }
+    return (offset + 1) % arr.size(); // Update offset
   }
 
   // Called once the command ends or is interrupted.
