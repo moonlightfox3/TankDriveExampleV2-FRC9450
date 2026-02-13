@@ -12,10 +12,12 @@ import frc.robot.commands.LEDControlCommand;
 import frc.robot.commands.MoveArmButtonCommand;
 import frc.robot.commands.MoveArmToPositionCommand;
 import frc.robot.commands.MoveJoystickCommand;
+import frc.robot.commands.ServoControlCommand;
 import frc.robot.commands.TeamCANdleAnimationCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.ServoSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,6 +32,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final DrivetrainSubsystem m_drivetrain = DrivetrainSubsystem.getInstance();
   public final ArmSubsystem m_arm = ArmSubsystem.getInstance();
+  public final ServoSubsystem m_servo = ServoSubsystem.getInstance();
   public final LEDSubsystem m_leds = LEDSubsystem.getInstance();
 
   /** The container for the robot. Contains subsystems, IO devices, and commands. */
@@ -55,6 +58,8 @@ public class RobotContainer {
     m_driverController.b().onTrue(new MoveArmToPositionCommand(m_arm, 2.0));
     m_driverController.y().onTrue(new MoveArmToPositionCommand(m_arm, 9.75));
     m_driverController.x().onTrue(new MoveArmToPositionCommand(m_arm, 17.5));
+
+    m_driverController.leftBumper().whileTrue(new ServoControlCommand(m_servo, m_driverController));
     
     m_driverController.start().toggleOnTrue((new TeamCANdleAnimationCommand(m_leds)).ignoringDisable(true));
   }
