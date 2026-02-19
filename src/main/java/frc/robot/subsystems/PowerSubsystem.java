@@ -6,18 +6,30 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.hal.PowerDistributionVersion;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// TODO: Put logs in coordsub of main robot
 public class PowerSubsystem extends SubsystemBase { // TODO: Test
   private static PowerSubsystem INSTANCE;
 
-  PowerDistribution power = new PowerDistribution(-1, ModuleType.kRev); // TODO: CAN ID (Not -1)
+  private final PowerDistribution power = new PowerDistribution(); // Defaults to CAN ID 0 for CTRE, 1 for REV (should auto-detect type and therefore id)
+  public final int CAN_ID = power.getModule();
+  public final ModuleType TYPE = power.getType();
+  public final PowerDistributionVersion VERSION_NUMBERS = power.getVersion();
 
   /** Creates a new PowerSubsystem. */
   public PowerSubsystem() {
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/CanId", CAN_ID);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Type", TYPE);
+
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMajor", VERSION_NUMBERS.firmwareMajor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMinor", VERSION_NUMBERS.firmwareMinor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareFix", VERSION_NUMBERS.firmwareFix);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMajor", VERSION_NUMBERS.hardwareMajor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMinor", VERSION_NUMBERS.hardwareMinor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/UniqueId", VERSION_NUMBERS.uniqueId);
   }
   public static PowerSubsystem getInstance() {
     if (INSTANCE == null) INSTANCE = new PowerSubsystem();
@@ -28,7 +40,10 @@ public class PowerSubsystem extends SubsystemBase { // TODO: Test
   public void periodic() {
     Logger.recordOutput("TankDrive/PowerSubsystem/BatteryVoltage", getBatteryVoltage());
     Logger.recordOutput("TankDrive/PowerSubsystem/TotalAmpPull", getTotalCurrentAmpPull());
-    Logger.recordOutput("TankDrive/PowerSubsystem/PowerTempC", getPowerTempCelsiusCTRE());
+
+    Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/PowerTempC", getPowerTempCelsiusCTRE());
+    Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/PowerUsed", getTotalPowerUsedCTRE());
+    Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/EnergyUsedResettable", getTotalEnergyUsedCTRE());
   }
 
   public double getBatteryVoltage() {
@@ -44,5 +59,17 @@ public class PowerSubsystem extends SubsystemBase { // TODO: Test
   /** CTRE only, always returns 0 for REV */
   public double getPowerTempCelsiusCTRE() {
     return power.getTemperature();
+  }
+  /** CTRE only, always returns 0 for REV */
+  public double getTotalPowerUsedCTRE() {
+    return power.getTotalPower();
+  }
+  /** CTRE only, always returns 0 for REV */
+  public double getTotalEnergyUsedCTRE() {
+    return power.getTotalEnergy();
+  }
+  /** CTRE only, does nothing for REV */
+  public void resetTotalEnergyUsedCTRE() {
+    power.resetTotalEnergy();
   }
 }
