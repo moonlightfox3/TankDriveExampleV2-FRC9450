@@ -22,7 +22,7 @@ public class LEDSubsystem extends SubsystemBase {
         return INSTANCE;
     }
     
-    private CANdle candle = new CANdle(40, "CantShoot");
+    private CANdle candle = new CANdle(6, "CantDrive");
     private SolidColor solidColorRequest = new SolidColor(0, 8).withColor(EMPTY_COLOR);
 
     public LEDSubsystem() {

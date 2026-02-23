@@ -11,10 +11,11 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class PowerSubsystem extends SubsystemBase { // TODO: Test
+public class PowerSubsystem extends SubsystemBase {
   private static PowerSubsystem INSTANCE;
 
-  private final PowerDistribution power = new PowerDistribution(); // Defaults to CAN ID 0 for CTRE, 1 for REV (should auto-detect type and therefore id)
+  // Defaults to CAN ID 0 for CTRE, 1 for REV (should auto-detect type and id)
+  private final PowerDistribution power = new PowerDistribution();
   public final int CAN_ID = power.getModule();
   public final ModuleType TYPE = power.getType();
   public final PowerDistributionVersion VERSION_NUMBERS = power.getVersion();
@@ -40,6 +41,11 @@ public class PowerSubsystem extends SubsystemBase { // TODO: Test
   public void periodic() {
     Logger.recordOutput("TankDrive/PowerSubsystem/BatteryVoltage", getBatteryVoltage());
     Logger.recordOutput("TankDrive/PowerSubsystem/TotalAmpPull", getTotalCurrentAmpPull());
+    if (TYPE == ModuleType.kRev) {
+      for (int i = 0; i <= 23; i++) Logger.recordOutput("TankDrive/PowerSubsystem/AmpPull/" + i, getCurrentAmpPull(i));
+    } else if (TYPE == ModuleType.kCTRE) {
+      for (int i = 0; i <= 15; i++) Logger.recordOutput("TankDrive/PowerSubsystem/AmpPull/" + i, getCurrentAmpPull(i));
+    }
 
     Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/PowerTempC", getPowerTempCelsiusCTRE());
     Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/PowerUsed", getTotalPowerUsedCTRE());
@@ -52,6 +58,8 @@ public class PowerSubsystem extends SubsystemBase { // TODO: Test
   public double getTotalCurrentAmpPull() {
     return power.getTotalCurrent();
   }
+
+  /** REV: Channels 0-23, CTRE: Channels 0-15 */
   public double getCurrentAmpPull(int channel) {
     return power.getCurrent(channel);
   }
