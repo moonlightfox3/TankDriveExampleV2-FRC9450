@@ -16,21 +16,22 @@ public class PowerSubsystem extends SubsystemBase {
 
   // Defaults to CAN ID 0 for CTRE, 1 for REV (should auto-detect type and id)
   private final PowerDistribution power = new PowerDistribution();
-  public final int CAN_ID = power.getModule();
-  public final ModuleType TYPE = power.getType();
-  public final PowerDistributionVersion VERSION_NUMBERS = power.getVersion();
+  private final int CAN_ID = power.getModule();
+  private final ModuleType TYPE = power.getType();
+  private final PowerDistributionVersion VERSION_NUMBERS = power.getVersion();
 
   /** Creates a new PowerSubsystem. */
   public PowerSubsystem() {
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/CanId", CAN_ID);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Type", TYPE);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/CanId", getCanId());
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/IsREV", isREV());
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/NumChannels", getNumChannels());
 
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMajor", VERSION_NUMBERS.firmwareMajor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMinor", VERSION_NUMBERS.firmwareMinor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareFix", VERSION_NUMBERS.firmwareFix);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMajor", VERSION_NUMBERS.hardwareMajor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMinor", VERSION_NUMBERS.hardwareMinor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/UniqueId", VERSION_NUMBERS.uniqueId);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMajor", getVersion().firmwareMajor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMinor", getVersion().firmwareMinor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareFix", getVersion().firmwareFix);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMajor", getVersion().hardwareMajor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMinor", getVersion().hardwareMinor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/UniqueId", getVersion().uniqueId);
   }
   public static PowerSubsystem getInstance() {
     if (INSTANCE == null) INSTANCE = new PowerSubsystem();
@@ -40,23 +41,39 @@ public class PowerSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     Logger.recordOutput("TankDrive/PowerSubsystem/BatteryVoltage", getBatteryVoltage());
-    Logger.recordOutput("TankDrive/PowerSubsystem/TotalAmpPull", getTotalCurrentAmpPull());
-    if (TYPE == ModuleType.kRev) {
-      for (int i = 0; i <= 23; i++) Logger.recordOutput("TankDrive/PowerSubsystem/AmpPull/" + i, getCurrentAmpPull(i));
-    } else if (TYPE == ModuleType.kCTRE) {
-      for (int i = 0; i <= 15; i++) Logger.recordOutput("TankDrive/PowerSubsystem/AmpPull/" + i, getCurrentAmpPull(i));
-    }
+    Logger.recordOutput("TankDrive/PowerSubsystem/ReportedTotalAmpPull", getReportedTotalCurrentAmpPull());
+    Logger.recordOutput("TankDrive/PowerSubsystem/CalculatedTotalAmpPull", getCalculatedTotalCurrentAmpPull());
+    for (int i = 0; i < getNumChannels(); i++) Logger.recordOutput("TankDrive/PowerSubsystem/AmpPull/" + i, getCurrentAmpPull(i));
 
     Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/PowerTempC", getPowerTempCelsiusCTRE());
     Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/PowerUsed", getTotalPowerUsedCTRE());
     Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/EnergyUsedResettable", getTotalEnergyUsedCTRE());
   }
 
+  public int getCanId() {
+    return CAN_ID;
+  }
+  public PowerDistributionVersion getVersion() {
+    return VERSION_NUMBERS;
+  }
+  public boolean isREV() {
+    return TYPE == ModuleType.kRev;
+  }
+  public int getNumChannels() {
+    if (isREV()) return 24;
+    else return 16;
+  }
+
   public double getBatteryVoltage() {
     return power.getVoltage();
   }
-  public double getTotalCurrentAmpPull() {
+  public double getReportedTotalCurrentAmpPull() {
     return power.getTotalCurrent();
+  }
+  public double getCalculatedTotalCurrentAmpPull() {
+    double sum = 0.0;
+    for (int i = 0; i < getNumChannels(); i++) sum += getCurrentAmpPull(i);
+    return sum;
   }
 
   /** REV: Channels 0-23, CTRE: Channels 0-15 */
