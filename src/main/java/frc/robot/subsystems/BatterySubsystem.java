@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.playingwithfusion.BattFuelGauge;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class BatterySubsystem extends SubsystemBase {
   private static BatterySubsystem INSTANCE;
 
-  private final BattFuelGauge BFG = new BattFuelGauge(-1); // TODO: ID
+  private final BattFuelGauge BFG = new BattFuelGauge(80);
 
   /** Creates a new BatterySubsystem. */
   public BatterySubsystem() {
@@ -23,5 +25,6 @@ public class BatterySubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    Logger.recordOutput("TankDrive/BatterySubsystem/Info/SerialNumber", BFG.getSerialNumber());
   }
 }

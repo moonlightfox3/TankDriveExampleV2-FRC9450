@@ -15,6 +15,7 @@ import frc.robot.commands.MoveJoystickCommand;
 import frc.robot.commands.ServoControlCommand;
 import frc.robot.commands.TeamCANdleAnimationCommand;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.BatterySubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PowerSubsystem;
@@ -31,6 +32,7 @@ public class RobotContainer {
   public final CommandXboxController m_driverController = new CommandXboxController(0);
 
   // The robot's subsystems and commands are defined here...
+  public final BatterySubsystem m_battery = BatterySubsystem.getInstance();
   public final PowerSubsystem m_power = PowerSubsystem.getInstance();
   public final DrivetrainSubsystem m_drivetrain = DrivetrainSubsystem.getInstance();
   public final ArmSubsystem m_arm = ArmSubsystem.getInstance();
