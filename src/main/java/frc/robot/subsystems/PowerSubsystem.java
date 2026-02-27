@@ -26,12 +26,13 @@ public class PowerSubsystem extends SubsystemBase {
     Logger.recordOutput("TankDrive/PowerSubsystem/Info/IsREV", isREV());
     Logger.recordOutput("TankDrive/PowerSubsystem/Info/NumChannels", getNumChannels());
 
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMajor", getVersion().firmwareMajor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMinor", getVersion().firmwareMinor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareFix", getVersion().firmwareFix);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMajor", getVersion().hardwareMajor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMinor", getVersion().hardwareMinor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/UniqueId", getVersion().uniqueId);
+    PowerDistributionVersion version = getVersion();
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMajor", version.firmwareMajor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMinor", version.firmwareMinor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareFix", version.firmwareFix);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMajor", version.hardwareMajor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMinor", version.hardwareMinor);
+    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/UniqueId", version.uniqueId);
   }
   public static PowerSubsystem getInstance() {
     if (INSTANCE == null) INSTANCE = new PowerSubsystem();
@@ -41,13 +42,11 @@ public class PowerSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     Logger.recordOutput("TankDrive/PowerSubsystem/BatteryVoltage", getBatteryVoltage());
-    Logger.recordOutput("TankDrive/PowerSubsystem/ReportedTotalAmpPull", getReportedTotalCurrentAmpPull());
-    Logger.recordOutput("TankDrive/PowerSubsystem/CalculatedTotalAmpPull", getCalculatedTotalCurrentAmpPull());
-    for (int i = 0; i < getNumChannels(); i++) Logger.recordOutput("TankDrive/PowerSubsystem/AmpPull/" + i, getCurrentAmpPull(i));
 
-    Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/PowerTempC", getPowerTempCelsiusCTRE());
-    Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/PowerUsed", getTotalPowerUsedCTRE());
-    Logger.recordOutput("TankDrive/PowerSubsystem/CTRE/EnergyUsedResettable", getTotalEnergyUsedCTRE());
+    double[] currents = getAllCurrentAmpPulls(); double currentsSum = 0.0;
+    for (double current : currents) currentsSum += current;
+    Logger.recordOutput("TankDrive/PowerSubsystem/AmpPulls", currents);
+    Logger.recordOutput("TankDrive/PowerSubsystem/CalculatedTotalAmpPull", currentsSum);
   }
 
   public int getCanId() {
@@ -71,14 +70,18 @@ public class PowerSubsystem extends SubsystemBase {
     return power.getTotalCurrent();
   }
   public double getCalculatedTotalCurrentAmpPull() {
-    double sum = 0.0;
-    for (int i = 0; i < getNumChannels(); i++) sum += getCurrentAmpPull(i);
-    return sum;
+    double[] currents = getAllCurrentAmpPulls(); double currentsSum = 0.0;
+    for (double current : currents) currentsSum += current;
+    return currentsSum;
   }
 
   /** REV: Channels 0-23, CTRE: Channels 0-15 */
   public double getCurrentAmpPull(int channel) {
     return power.getCurrent(channel);
+  }
+  /** REV: Channels 0-23, CTRE: Channels 0-15 */
+  public double[] getAllCurrentAmpPulls() {
+    return power.getAllCurrents();
   }
 
   /** CTRE only, always returns 0 for REV */
