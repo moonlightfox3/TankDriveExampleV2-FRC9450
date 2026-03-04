@@ -32,7 +32,7 @@ public class BatterySubsystem extends SubsystemBase {
         float capacityAh = BFG.getCapacityAh();
         Logger.recordOutput("TankDrive/BatterySubsystem/Capacity_Ah", capacityAh);
         Logger.recordOutput("TankDrive/BatterySubsystem/RatedCapacity_Ah", BFG.getRatedCapacityAh());
-        Logger.recordOutput("TankDrive/BatterySubsystem/Age_ShouldBeDaysButIsntIdkWhy", BFG.getBatteryAgeDays());
+        Logger.recordOutput("TankDrive/BatterySubsystem/Age_Days", BFG.getBatteryAgeDays()); // TODO: Why is this not in days?
         Logger.recordOutput("TankDrive/BatterySubsystem/NumCycles", BFG.getNumCycles());
 
         Logger.recordOutput("TankDrive/BatterySubsystem/Voltage", BFG.getVoltage());
