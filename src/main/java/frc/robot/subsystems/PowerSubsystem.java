@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 import edu.wpi.first.hal.PowerDistributionVersion;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -19,20 +20,12 @@ public class PowerSubsystem extends SubsystemBase {
   private final int CAN_ID = power.getModule();
   private final ModuleType TYPE = power.getType();
   private final PowerDistributionVersion VERSION_NUMBERS = power.getVersion();
+  
+  private final LoggedNetworkBoolean logDebuggingToggle = new LoggedNetworkBoolean("Tuning/Debugging Toggles/Power", false);
+  private final LoggedNetworkBoolean logDebuggingToggleSecondary = new LoggedNetworkBoolean("Tuning/Debugging Toggles/Power Secondary", false); // For less important values (like firmware versions)
 
   /** Creates a new PowerSubsystem. */
   public PowerSubsystem() {
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/CanId", getCanId());
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/IsREV", isREV());
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/NumChannels", getNumChannels());
-
-    PowerDistributionVersion version = getVersion();
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMajor", version.firmwareMajor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMinor", version.firmwareMinor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareFix", version.firmwareFix);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMajor", version.hardwareMajor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMinor", version.hardwareMinor);
-    Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/UniqueId", version.uniqueId);
   }
   public static PowerSubsystem getInstance() {
     if (INSTANCE == null) INSTANCE = new PowerSubsystem();
@@ -41,12 +34,28 @@ public class PowerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Logger.recordOutput("TankDrive/PowerSubsystem/BatteryVoltage", getBatteryVoltage());
+    if (logDebuggingToggle.get()) {
+      Logger.recordOutput("TankDrive/PowerSubsystem/BatteryVoltage", getBatteryVoltage());
 
-    double[] currents = getAllCurrentAmpPulls(); double currentsSum = 0.0;
-    for (double current : currents) currentsSum += current;
-    Logger.recordOutput("TankDrive/PowerSubsystem/AmpPulls", currents);
-    Logger.recordOutput("TankDrive/PowerSubsystem/CalculatedTotalAmpPull", currentsSum);
+      // Doesn't use the method to calculate total current draw because this reduces vendordep method calls (already getting all channels)
+      double[] currents = getAllCurrentAmpPulls(); double currentsSum = 0.0;
+      for (double current : currents) currentsSum += current;
+      Logger.recordOutput("TankDrive/PowerSubsystem/AmpPulls", currents);
+      Logger.recordOutput("TankDrive/PowerSubsystem/CalculatedTotalAmpPull", currentsSum);
+    }
+    if (logDebuggingToggleSecondary.get()) {
+      Logger.recordOutput("TankDrive/PowerSubsystem/Info/CanId", getCanId());
+      Logger.recordOutput("TankDrive/PowerSubsystem/Info/IsREV", isREV());
+      Logger.recordOutput("TankDrive/PowerSubsystem/Info/NumChannels", getNumChannels());
+
+      PowerDistributionVersion version = getVersion();
+      Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMajor", version.firmwareMajor);
+      Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareMinor", version.firmwareMinor);
+      Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/FirmwareFix", version.firmwareFix);
+      Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMajor", version.hardwareMajor);
+      Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/HardwareMinor", version.hardwareMinor);
+      Logger.recordOutput("TankDrive/PowerSubsystem/Info/Version/UniqueId", version.uniqueId);
+    }
   }
 
   public int getCanId() {
@@ -66,6 +75,7 @@ public class PowerSubsystem extends SubsystemBase {
   public double getBatteryVoltage() {
     return power.getVoltage();
   }
+  /** Warning: The returned number is rounded to an integer. */
   public double getReportedTotalCurrentAmpPull() {
     return power.getTotalCurrent();
   }

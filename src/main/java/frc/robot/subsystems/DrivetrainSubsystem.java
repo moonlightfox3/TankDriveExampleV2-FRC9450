@@ -26,9 +26,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private final PIDController speedPID = new PIDController(0.4, 0.0, 0.0);
 
-  private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/Speed/PID/P", 0.0);
-  private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/Speed/PID/I", 0.0);
-  private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("TankDrive/DrivetrainSubsystem/Speed/PID/D", 0.0);
+  private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("Tuning/DrivetrainSubsystem/Speed/PID/P", 0.0);
+  private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("Tuning/DrivetrainSubsystem/Speed/PID/I", 0.0);
+  private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("Tuning/DrivetrainSubsystem/Speed/PID/D", 0.0);
 
   private final SparkMaxConfig config = new SparkMaxConfig();
   private final SparkMax leftFrontMotor = new SparkMax(1, MotorType.kBrushless);

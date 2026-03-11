@@ -24,9 +24,9 @@ public class ArmSubsystem extends SubsystemBase {
   
   private final PIDController speedPID = new PIDController(1.0, 0.0, 0.0);
   
-  private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/PID/P", 0.0);
-  private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/PID/I", 0.0);
-  private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/PID/D", 0.0);
+  private final LoggedNetworkNumber speedPIDLogP = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/PID/P", 0.0);
+  private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/PID/I", 0.0);
+  private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/PID/D", 0.0);
 
   private final TalonFX motor = new TalonFX(5, "CantDrive");
   private final MotionMagicVoltage request = new MotionMagicVoltage(0.0).withSlot(0);
@@ -36,16 +36,16 @@ public class ArmSubsystem extends SubsystemBase {
   private double oldVolts = 0.0;
   public boolean usingMotionMagic = true;
 
-  private final LoggedNetworkNumber requestLogKS = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/kS", 0.0);
-  private final LoggedNetworkNumber requestLogKV = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/kV", 0.0);
-  private final LoggedNetworkNumber requestLogKA = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/kA", 0.0);
-  private final LoggedNetworkNumber requestLogKP = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/kP", 0.0);
-  private final LoggedNetworkNumber requestLogKI = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/kI", 0.0);
-  private final LoggedNetworkNumber requestLogKD = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/kD", 0.0);
-  private final LoggedNetworkNumber requestLogKG = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/kG", 0.0);
-  private final LoggedNetworkNumber requestLogVel = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/Velocity", 0.0);
-  private final LoggedNetworkNumber requestLogAcc = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/Acceleration", 0.0);
-  private final LoggedNetworkNumber requestLogJerk = new LoggedNetworkNumber("TankDrive/ArmSubsystem/Speed/MotionMagic/Jerk", 0.0);
+  private final LoggedNetworkNumber requestLogKS = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/kS", 0.0);
+  private final LoggedNetworkNumber requestLogKV = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/kV", 0.0);
+  private final LoggedNetworkNumber requestLogKA = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/kA", 0.0);
+  private final LoggedNetworkNumber requestLogKP = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/kP", 0.0);
+  private final LoggedNetworkNumber requestLogKI = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/kI", 0.0);
+  private final LoggedNetworkNumber requestLogKD = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/kD", 0.0);
+  private final LoggedNetworkNumber requestLogKG = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/kG", 0.0);
+  private final LoggedNetworkNumber requestLogVel = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/Velocity", 0.0);
+  private final LoggedNetworkNumber requestLogAcc = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/Acceleration", 0.0);
+  private final LoggedNetworkNumber requestLogJerk = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/MotionMagic/Jerk", 0.0);
 
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
