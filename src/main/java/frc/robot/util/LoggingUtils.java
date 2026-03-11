@@ -7,7 +7,7 @@ package frc.robot.util;
 import org.littletonrobotics.junction.Logger;
 
 /** Misc utility class. */
-public class Utils {
+public class LoggingUtils {
     /** Don't put a '/' at the end of the path */
     public static void logSecondsAsTime(String path, int seconds) {
         Logger.recordOutput(path + "/TotalSeconds", seconds);

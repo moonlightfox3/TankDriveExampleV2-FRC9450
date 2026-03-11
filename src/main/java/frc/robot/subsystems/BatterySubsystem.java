@@ -7,15 +7,14 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
-import com.playingwithfusion.BattFuelGauge;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.Utils;
+import frc.robot.util.BattFuelGaugeFixed;
+import frc.robot.util.LoggingUtils;
 
 public class BatterySubsystem extends SubsystemBase {
   private static BatterySubsystem INSTANCE;
 
-  private final BattFuelGauge BFG = new BattFuelGauge(80);
+  private final BattFuelGaugeFixed BFG = new BattFuelGaugeFixed(80);
 
   private final LoggedNetworkBoolean logDebuggingToggle = new LoggedNetworkBoolean("Tuning/Debugging Toggles/Battery", false);
   private final LoggedNetworkBoolean logDebuggingToggleSecondary = new LoggedNetworkBoolean("Tuning/Debugging Toggles/Battery Secondary", false); // For less important values (like firmware versions)
@@ -42,7 +41,7 @@ public class BatterySubsystem extends SubsystemBase {
 
           Logger.recordOutput("TankDrive/BatterySubsystem/Voltage_V", BFG.getVoltage());
           Logger.recordOutput("TankDrive/BatterySubsystem/Current_A", BFG.getCurrent());
-        Logger.recordOutput("TankDrive/BatterySubsystem/State_Enum", BFG.getBatteryState()); // Different than the state on the webpage
+        Logger.recordOutput("TankDrive/BatterySubsystem/State_Enum", BFG.getBatteryState());
           float effectiveCapacityAh = BFG.getEffectiveCapacityAh();
           Logger.recordOutput("TankDrive/BatterySubsystem/EffectiveCapacity_Ah", effectiveCapacityAh);
           float effectiveCapacityPct = effectiveCapacityAh / capacityAh * 100.0F;
@@ -66,8 +65,8 @@ public class BatterySubsystem extends SubsystemBase {
       Logger.recordOutput("TankDrive/BatterySubsystem/CurrentCycle/MinDepthOfDischarge_Wh", BFG.getCycleMinDodWh()); // Returns the same value as the current cycle min depth of discharge in amp-hours, but shouldn't
       Logger.recordOutput("TankDrive/BatterySubsystem/CurrentCycle/MaxDepthOfDischarge_Ah", BFG.getCycleMaxDodAh());
       Logger.recordOutput("TankDrive/BatterySubsystem/CurrentCycle/MaxDepthOfDischarge_Wh", BFG.getCycleMaxDodWh());
-        Utils.logSecondsAsTime("TankDrive/BatterySubsystem/CurrentCycle/ChargeTime_Time", (int) BFG.getCycleChargeTime());
-        Utils.logSecondsAsTime("TankDrive/BatterySubsystem/CurrentCycle/DischargeTime_Time", (int) BFG.getCycleDischargeTime());
+        LoggingUtils.logSecondsAsTime("TankDrive/BatterySubsystem/CurrentCycle/ChargeTime_Time", (int) BFG.getCycleChargeTime());
+        LoggingUtils.logSecondsAsTime("TankDrive/BatterySubsystem/CurrentCycle/DischargeTime_Time", (int) BFG.getCycleDischargeTime());
 
 
           Logger.recordOutput("TankDrive/BatterySubsystem/LastMatch/MinVoltage_V", BFG.getMatchMinVoltage());
@@ -78,9 +77,9 @@ public class BatterySubsystem extends SubsystemBase {
           Logger.recordOutput("TankDrive/BatterySubsystem/LastMatch/RmsDischargeCurrent_A", BFG.getMatchRmsDischargeCurrent());
       Logger.recordOutput("TankDrive/BatterySubsystem/LastMatch/MinDepthOfDischarge_Ah", BFG.getMatchMinDodAh());
       Logger.recordOutput("TankDrive/BatterySubsystem/LastMatch/MaxDepthOfDischarge_Ah", BFG.getMatchMaxDodAh());
-      Utils.logSecondsAsTime("TankDrive/BatterySubsystem/LastMatch/ChargeTime_Time", (int) BFG.getMatchChargeTime());
-      Utils.logSecondsAsTime("TankDrive/BatterySubsystem/LastMatch/DischargeTime_Time", (int) BFG.getMatchDischargeTime());
-          Utils.logSecondsAsTime("TankDrive/BatterySubsystem/LastMatch/Duration_Time", (int) BFG.getMatchDuration()); // Labeled as "active time" on webpage
+      LoggingUtils.logSecondsAsTime("TankDrive/BatterySubsystem/LastMatch/ChargeTime_Time", (int) BFG.getMatchChargeTime());
+      LoggingUtils.logSecondsAsTime("TankDrive/BatterySubsystem/LastMatch/DischargeTime_Time", (int) BFG.getMatchDischargeTime());
+          LoggingUtils.logSecondsAsTime("TankDrive/BatterySubsystem/LastMatch/Duration_Time", (int) BFG.getMatchDuration()); // Labeled as "active time" on webpage
       Logger.recordOutput("TankDrive/BatterySubsystem/LastMatch/StartingCharge_Ah", BFG.getMatchStartingCharge()); // Webpage calls this "Starting depth of discharge"
       Logger.recordOutput("TankDrive/BatterySubsystem/LastMatch/StartingCharge_Wh", BFG.getMatchStartingEnergy()); // Webpage calls this "Starting depth of discharge"
       Logger.recordOutput("TankDrive/BatterySubsystem/LastMatch/EndingCharge_Ah", BFG.getMatchEndingCharge()); // Webpage calls this "Ending depth of discharge"
