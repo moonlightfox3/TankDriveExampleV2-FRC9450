@@ -18,7 +18,7 @@ public class LEDControlCommand extends Command {
   private double value = 1.0;
   private double brightness = 1.0;
   private int changeType = 0;
-  private int endIndex = 7;
+  private int endIndex = 0;
 
   private boolean rightPressed = false;
   private boolean leftPressed = false;
@@ -33,7 +33,8 @@ public class LEDControlCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_leds.setRange(0, 7);
+    m_leds.setRange(0, 0);
+    hue = 333; saturation = 1; value = 1; brightness = 0.05;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
