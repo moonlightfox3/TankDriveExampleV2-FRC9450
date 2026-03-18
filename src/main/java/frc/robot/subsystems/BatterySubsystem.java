@@ -14,6 +14,8 @@ import frc.robot.util.LoggingUtils;
 public class BatterySubsystem extends SubsystemBase {
   private static BatterySubsystem INSTANCE;
 
+  private boolean LOG_ON_LOAD = false;
+
   private final BattFuelGaugeFixed BFG = new BattFuelGaugeFixed(80);
 
   private final LoggedNetworkBoolean logDebuggingToggle = new LoggedNetworkBoolean("Tuning/Debugging Toggles/Battery", false);
@@ -29,8 +31,15 @@ public class BatterySubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if (LOG_ON_LOAD) {
+      BFG.saveLog("");
+
+      LOG_ON_LOAD = false;
+    }
+
     // No indents = Not shown on BFG screen. One indent = Partially shown on BFG screen. Two indents = Shown on BFG screen. (From base indent level)
     if (logDebuggingToggle.get()) {
+      Logger.recordOutput("TankDrive/BatterySubsystem/Connected_Bool", BFG.isConnected());
           Logger.recordOutput("TankDrive/BatterySubsystem/Nickname_Str", BFG.getNickname());
           Logger.recordOutput("TankDrive/BatterySubsystem/Manufacturer_Enum", BFG.getManufacturer());
           float capacityAh = BFG.getCapacityAh();
