@@ -95,16 +95,16 @@ public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
   */
   @Override
   public void initSendable(SendableBuilder builder) {
-      builder.setSmartDashboardType("Battery Fuel Gauge");
-      builder.addDoubleProperty("Voltage",            this::getVoltage,                  null);
-      builder.addDoubleProperty("Current",            this::getCurrent,                  null);
-      builder.addDoubleProperty("DOD",                this::getDodAh,                    null);
-      builder.addDoubleProperty("Capacity",           this::getCapacityAh,               null);
-      builder.addDoubleProperty("Effective Capacity", this::getEffectiveCapacityAh,      null);
-      builder.addDoubleProperty("Charge Remaining",   this::getRemainingChargePct,       null);
-      builder.addDoubleProperty("Cycle RMS Current",  this::getCycleRmsDischargeCurrent, null);
-      builder.addDoubleProperty("Match Min Voltage",  this::getMatchMinVoltage,          null);
-      builder.addBooleanProperty("Connected",         this::isConnected,                 null);
+    builder.setSmartDashboardType("Battery Fuel Gauge");
+    builder.addDoubleProperty("Voltage",            this::getVoltage,                  null);
+    builder.addDoubleProperty("Current",            this::getCurrent,                  null);
+    builder.addDoubleProperty("DOD",                this::getDodAh,                    null);
+    builder.addDoubleProperty("Capacity",           this::getCapacityAh,               null);
+    builder.addDoubleProperty("Effective Capacity", this::getEffectiveCapacityAh,      null);
+    builder.addDoubleProperty("Charge Remaining",   this::getRemainingChargePct,       null);
+    builder.addDoubleProperty("Cycle RMS Current",  this::getCycleRmsDischargeCurrent, null);
+    builder.addDoubleProperty("Match Min Voltage",  this::getMatchMinVoltage,          null);
+    builder.addBooleanProperty("Connected",         this::isConnected,                 null);
   }
 
   /**

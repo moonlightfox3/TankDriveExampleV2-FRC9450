@@ -33,7 +33,6 @@ public class BatterySubsystem extends SubsystemBase {
   public void periodic() {
     if (LOG_ON_LOAD) {
       BFG.saveLog("");
-
       LOG_ON_LOAD = false;
     }
 
