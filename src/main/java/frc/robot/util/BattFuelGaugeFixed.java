@@ -8,8 +8,10 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 
 /**
  * CAN based Battery Fuel Gauge (BFG) sensor instance
+ * FIXED: Small formatting changes
  */
 public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
+  /** FIXED: Made public */
   public final long m_handle;
 
   /**
@@ -23,7 +25,7 @@ public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
     MKPowered,
     PowerSonic,
     NumMfgs
-  };
+  }
 
   /**
    * Battery charge state enumeration
@@ -63,7 +65,7 @@ public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
      * Open circuit (no-load connected to battery).  State of charge based on open circuit voltage.
      */
     MeasureOCV
-  };
+  }
 
 
   /**
@@ -96,15 +98,15 @@ public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
   @Override
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("Battery Fuel Gauge");
-    builder.addDoubleProperty("Voltage",            this::getVoltage,                  null);
-    builder.addDoubleProperty("Current",            this::getCurrent,                  null);
-    builder.addDoubleProperty("DOD",                this::getDodAh,                    null);
-    builder.addDoubleProperty("Capacity",           this::getCapacityAh,               null);
-    builder.addDoubleProperty("Effective Capacity", this::getEffectiveCapacityAh,      null);
-    builder.addDoubleProperty("Charge Remaining",   this::getRemainingChargePct,       null);
-    builder.addDoubleProperty("Cycle RMS Current",  this::getCycleRmsDischargeCurrent, null);
-    builder.addDoubleProperty("Match Min Voltage",  this::getMatchMinVoltage,          null);
-    builder.addBooleanProperty("Connected",         this::isConnected,                 null);
+    builder.addDoubleProperty( "Voltage",            this::getVoltage,                  null);
+    builder.addDoubleProperty( "Current",            this::getCurrent,                  null);
+    builder.addDoubleProperty( "DOD",                this::getDodAh,                    null);
+    builder.addDoubleProperty( "Capacity",           this::getCapacityAh,               null);
+    builder.addDoubleProperty( "Effective Capacity", this::getEffectiveCapacityAh,      null);
+    builder.addDoubleProperty( "Charge Remaining",   this::getRemainingChargePct,       null);
+    builder.addDoubleProperty( "Cycle RMS Current",  this::getCycleRmsDischargeCurrent, null);
+    builder.addDoubleProperty( "Match Min Voltage",  this::getMatchMinVoltage,          null);
+    builder.addBooleanProperty("Connected",          this::isConnected,                 null);
   }
 
   /**
@@ -163,6 +165,7 @@ public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
 
   /**
    * Determine the charge/discharge state of the battery
+   * FIXED: Added this method
    * 
    * @return The raw charge/discharge state enumeration of the battery
    */
@@ -172,6 +175,7 @@ public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
 
   /**
    * Determine the charge/discharge state of the battery
+   * FIXED: Returned state was offset down by one
    * 
    * @return The charge/discharge state enumeration of the battery
    */
@@ -299,6 +303,7 @@ public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
 
   /**
    * Gets the raw manufacturer identifier of the battery.
+   * FIXED: Added this method
    *
    * @return Raw battery manufacturer reported by the BFG
    */
@@ -337,6 +342,7 @@ public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
 
   /**
    * Sets the raw battery manufacturer
+   * FIXED: Added this method
    *
    * @param newMfg New raw battery manufacturer
    */
