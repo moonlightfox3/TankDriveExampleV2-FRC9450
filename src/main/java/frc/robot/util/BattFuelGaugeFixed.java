@@ -9,6 +9,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 /**
  * CAN based Battery Fuel Gauge (BFG) sensor instance
  * FIXED: Small formatting changes
+ * 
  */
 public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
   /** FIXED: Made public */
@@ -254,6 +255,7 @@ public class BattFuelGaugeFixed implements Sendable, AutoCloseable {
 
   /**
    * Gets the age of the battery.
+   * FIXED: Return type
    *
    * @return battery age in days
    */
