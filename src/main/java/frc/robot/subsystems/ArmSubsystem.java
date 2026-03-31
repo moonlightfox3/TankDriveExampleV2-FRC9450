@@ -28,7 +28,7 @@ public class ArmSubsystem extends SubsystemBase {
   private final LoggedNetworkNumber speedPIDLogI = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/PID/I", 0.0);
   private final LoggedNetworkNumber speedPIDLogD = new LoggedNetworkNumber("Tuning/ArmSubsystem/Speed/PID/D", 0.0);
 
-  private final TalonFX motor = new TalonFX(5, "CantDrive");
+  private final TalonFX motor = new TalonFX(5, "CantShoot");
   private final MotionMagicVoltage request = new MotionMagicVoltage(0.0).withSlot(0);
   private final TalonFXConfiguration motorConfig;
   private final Slot0Configs slot0;
