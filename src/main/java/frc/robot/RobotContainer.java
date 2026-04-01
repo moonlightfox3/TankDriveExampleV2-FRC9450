@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoForwardCommand;
@@ -39,6 +40,8 @@ public class RobotContainer {
   public final ServoSubsystem m_servo = ServoSubsystem.getInstance();
   public final LEDSubsystem m_leds = LEDSubsystem.getInstance();
 
+  public final WrapperCommand m_animCmd = new TeamCANdleAnimationCommand(m_leds).ignoringDisable(true);
+
   /** The container for the robot. Contains subsystems, IO devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -65,7 +68,7 @@ public class RobotContainer {
 
     m_driverController.leftBumper().whileTrue(new ServoControlCommand(m_servo, m_driverController));
     
-    m_driverController.start().toggleOnTrue((new TeamCANdleAnimationCommand(m_leds)).ignoringDisable(true));
+    m_driverController.start().toggleOnTrue(m_animCmd);
   }
 
   /**
